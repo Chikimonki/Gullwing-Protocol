@@ -160,7 +160,7 @@ gullwing serve
 # Open the frontend
 cd src/extension && python3 -m http.server 8080
 ```
-
+WCC - https://github.com/endrazine/wcc
 ---
 
 ## 🔗 Regulatory Compliance
