@@ -160,7 +160,7 @@ gullwing serve
 # Open the frontend
 cd src/extension && python3 -m http.server 8080
 ```
-WCC - https://github.com/endrazine/wcc
+
 ---
 
 ## 🔗 Regulatory Compliance
@@ -187,7 +187,7 @@ MIT — freely deployable, modifiable, and distributable by any organization.
 - **CISA Listing:** Pending adjudication
 - **White Paper:** `docs/GULLWING-WHITEPAPER-v4.5.md`
 - **Demo Video:** [YouTube].(https://youtu.be/bFVrP7GcWYM).
-
+- WCC - https://github.com/endrazine/wcc
 ---
 
 *The Cormorant dives. The Gullwing watches. The mirrors reflect.*
