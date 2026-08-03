@@ -1,4 +1,4 @@
-# Gullwing Protocol — The Cormorant
+# Gullwing Protocol — The Cormorant - WSL2 Ubunutu
 
 > *"Lua is Portuguese for Moon. Moon is reflection."*
 
