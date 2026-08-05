@@ -208,7 +208,7 @@ MIT — freely deployable, modifiable, and distributable by any organization.
 - **Repository:** github.com/forgottennord-ship-it/GullWing
 - **CISA Listing:** Pending adjudication
 - **White Paper:** `docs/GULLWING-WHITEPAPER-v4.5.md`
-- **Demo Video:** [YouTube].(https://youtu.be/bFVrP7GcWYM).
+- **Demo Video:** [YouTube].(https://youtu.be/bFVrP7GcWYM & https://www.youtube.com/watch?v=RMTq-QCLzs8).
 - WCC - https://github.com/endrazine/wcc
 ---
 
