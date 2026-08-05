@@ -43,30 +43,7 @@ Gullwing maps to **8/8 CISA-recommended no-cost cybersecurity services**:
 
 ---
 
-## 📋 CRA Compliance Proof
 
-Gullwing detects supply chain attacks at the binary level by comparing dependency trees:
-
-```
-Clean binary:    libc.so.6
-Tampered binary: libc.so.6 + libcurl.so.4  ← DETECTED
-
-Delta: 9 changes, weight 12.0, SUPPLY CHAIN CHANGE — NOTABLE
-```
-
-**Proof Bundle** (one click from the CRA Proof tab):
-- Binary-level dependency delta
-- CycloneDX 1.6 SBOM with dependency trees (CRA Annex VII)
-- Syft package-level cross-validation
-- CISA 8/8 service mapping
-- UN R155/R156 vehicle ECU compliance
-
-**Download the proof:** Click `📋 CRA Proof` → `Generate CRA Proof Bundle` in the frontend.
-```
-
-## 🔬 The 8-Layer Convergent Model
-
-```
                      Target Binary
                            │
     ┌──────────────────────┼──────────────────────┐
