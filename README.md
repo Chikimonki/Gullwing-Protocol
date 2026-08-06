@@ -214,5 +214,5 @@ MIT — freely deployable, modifiable, and distributable by any organization.
 
 *The Cormorant dives. The Gullwing watches. The mirrors reflect.*
 
-*Built with LuaJIT FFI + Zig. Submitted to CISA. Ready for the world.*
+*Built with LuaJIT FFI + Zig + ML + Phi-4 Mini. Submitted to CISA. Ready for the world.*
 ```
