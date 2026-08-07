@@ -21,8 +21,6 @@ gullwing bus
 # Generate a CISA compliance report
 gullwing cisa-report
 
-# Ask the local LLM about a binary
-gullwing ask /tmp/suspicious_binary
 ```
 
 ---
@@ -122,7 +120,7 @@ No single layer is trusted. The agreement between independent mirrors produces t
 
 - **8-layer convergent analysis** — identity, structure, semantics, entropy, ML, runtime, memory, memory differential
 - **WCC Binary Unlinking** — transform executables into callable shared libraries
-- **Local LLM Analysis** — air-gapped AI security assessment (Phi-4-mini / Qwen2.5)
+- **Local LLM Analysis** — air-gapped AI security assessment (Phi-4-mini)
 - **Continuous Monitoring** — real-time supply chain change detection (~2 seconds)
 - **Automated Quarantine** — instant isolation of tampered binaries
 - **Ed25519 Attestation** — cryptographic evidence for legal/compliance use
