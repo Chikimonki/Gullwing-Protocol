@@ -1,0 +1,33 @@
+{
+  "version": "1.0",
+  "file": "test_binaries/test_target",
+  "size": 2050704,
+  "file_hash": "cf9b1ccff08c358c940764a44d00190a807d9699c8e0d29184bbba1e62795e27",
+  "entropy": 5.104910,
+  "sections": [
+    {"name": ".rodata", "offset": 576, "size": 39606, "hash": "b3b94bda909a79a55c3017d4e351a106e1daf501c6aa7e305c6fd51af37b6922", "entropy": 5.2506},
+    {"name": ".eh_frame_hdr", "offset": 40184, "size": 1708, "hash": "1ec3f51e88e3925791e2b9d96081bd11cfb1b22ae61bd70c0b4f78fdd272c368", "entropy": 4.9025},
+    {"name": ".eh_frame", "offset": 41896, "size": 12564, "hash": "b7d452f53dfe67cbfe487042efaece046e3e871f0d3bf8a053289a0a2b7e62ef", "entropy": 4.8592},
+    {"name": ".text", "offset": 54464, "size": 204960, "hash": "4271d98dd57def361520fc7c387d64373d5b6c3bc51dd44736699f219bda3021", "entropy": 6.3977},
+    {"name": ".tbss", "offset": 259424, "size": 13, "hash": "0000000000000000000000000000000000000000000000000000000000000000", "entropy": 0.0000},
+    {"name": ".got", "offset": 259424, "size": 8, "hash": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc", "entropy": 0.0000},
+    {"name": ".relro_padding", "offset": 259432, "size": 2712, "hash": "0000000000000000000000000000000000000000000000000000000000000000", "entropy": 0.0000},
+    {"name": ".bss", "offset": 262144, "size": 12676, "hash": "0000000000000000000000000000000000000000000000000000000000000000", "entropy": 0.0000},
+    {"name": ".debug_loc", "offset": 262144, "size": 809964, "hash": "710209ac65f841a33ec6f0decc97c923798cc747bdec657294994330d7b77719", "entropy": 3.0440},
+    {"name": ".debug_abbrev", "offset": 1072108, "size": 2487, "hash": "bff76f0158ac1c1a4a2c9c3a8273495d0fd06f4c3cd3dc2055d5d07e85d0fb9e", "entropy": 4.8656},
+    {"name": ".debug_info", "offset": 1074595, "size": 399161, "hash": "a60a30dff4c34583d2a989d58ea609add2d160ea7345a41a0eded0ee1cf777f4", "entropy": 5.4901},
+    {"name": ".debug_ranges", "offset": 1473756, "size": 131632, "hash": "3304baf5786919ffaf95918fa9fcc6f21c79ac8ef0b9e790548e59f74b0a78d4", "entropy": 2.3096},
+    {"name": ".debug_str", "offset": 1605388, "size": 145155, "hash": "0693fb4e11d6264749e98994fedf25566f20020a4dbe0a822f75ecbdfe7d6b40", "entropy": 5.1329},
+    {"name": ".debug_pubnames", "offset": 1750543, "size": 42128, "hash": "3cad9a95b8da000289a93158b33959d606551a6fa702ecc1deaccb7b47cc96d7", "entropy": 5.6102},
+    {"name": ".debug_pubtypes", "offset": 1792671, "size": 34286, "hash": "56def5bece3eb6c3c1d754efa7c90753c183b729b0d8f5b5731107bcd7dac933", "entropy": 5.4708},
+    {"name": ".debug_line", "offset": 1826957, "size": 198181, "hash": "acee436b0d141843f2acb70556a9d0a57e810999a5a19af7b182b05e0f9fd6f6", "entropy": 5.7304},
+    {"name": ".comment", "offset": 2025138, "size": 19, "hash": "dff1dcbccb76bb46456eb9fded346ccf8173130579edd8a7e6b0cc8ff1872452", "entropy": 3.6819},
+    {"name": ".symtab", "offset": 2025160, "size": 8592, "hash": "793a1e7c31c8d5375907601575d48f6ef76eebb08b5cbc109de4e414f31b5702", "entropy": 3.1110},
+    {"name": ".shstrtab", "offset": 2033752, "size": 211, "hash": "07daa8b925bb5999ca19e3a382c3ef116c148939c7847c60750fce5264c67cec", "entropy": 4.2143},
+    {"name": ".strtab", "offset": 2033963, "size": 15396, "hash": "1d68fd7be6f1d465a502d967921dde870f683f06dc5963aeb2cb928253f66078", "entropy": 5.1667}
+  ],
+  "caves": [
+    {"offset": 259432, "size": 2712, "hash": "fda84991ef0af11f9dc37593fb262f63bb130cdc82f8dee61fa1385996ff052d", "entropy": 0.0000, "before": ".got", "after": ".debug_loc"}
+  ],
+  "composite": "054dbf6bb54cddccd22e88c6eb4417e639d04c1a5a11c217ba6c1075a45db674"
+}

@@ -1,0 +1,29 @@
+================================================================
+  MOABI-DELTA — Supply Chain Differential Report
+================================================================
+
+  Old: /tmp/gullwing-test/ls  (459c937b69bd76620d6d01100a0793294349c89871f4474d398efdae49fcee09)
+  New: /tmp/gullwing-test/ls  (0148f5ab3062a905281d8deb9645363da5131011c9e7b6dcaa38b504e41b68ea)
+
+  Status: 9 change(s) detected
+
+  [STRUCTURE]
+    Section count changed: 30 → 31 (weight 1.0)
+    Import count changed: 3 → 2 (weight 1.5)
+    Export count changed: 144 → 128 (weight 1.0)
+
+  [SEMANTICS]
+    libcurl dependency toggled: true → nil (weight 2.5)
+    libz dependency toggled: true → nil (weight 1.5)
+    libcurl symbols toggled: true → false (weight 2.0)
+
+  [ML]
+    ML classification changed: network_tool → system_utility (weight 3.0) ⚠
+    ML anomaly status changed: true → false (weight 2.0)
+    ML distance shift: 5.8742 → 0.6289 (Δ=-5.2453) (weight 1.5)
+
+----------------------------------------------------------------
+  [VERDICT]  SUPPLY CHAIN CHANGE — CRITICAL
+  Weight: 16.0  |  Changes: 9  |  Critical: 1
+
+================================================================

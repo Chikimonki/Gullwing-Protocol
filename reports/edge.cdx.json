@@ -1,0 +1,482 @@
+{
+  "bomFormat": "CycloneDX",
+  "components": [
+    {
+      "bom-ref": "moabi/delegatedWebFeatures.sccd@sha256:ca6c469655d4d0d7",
+      "evidence": {
+        "identity": {
+          "confidence": 1,
+          "field": "hash",
+          "methods": [
+            {
+              "confidence": 1,
+              "technique": "hash-comparison",
+              "value": "ca6c469655d4d0d7ce5beb447dab43048a377a6042c4800b322257567ac135d9"
+            }
+          ]
+        }
+      },
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "ca6c469655d4d0d7ce5beb447dab43048a377a6042c4800b322257567ac135d9"
+        }
+      ],
+      "name": "delegatedWebFeatures.sccd",
+      "properties": [
+        {
+          "name": "moabi:format",
+          "value": "other"
+        },
+        {
+          "name": "moabi:path",
+          "value": "/mnt/c/Program Files (x86)/Microsoft/Edge/Application/delegatedWebFeatures.sccd"
+        },
+        {
+          "name": "moabi:size",
+          "value": "18112"
+        },
+        {
+          "name": "moabi:risk",
+          "value": "NOTABLE"
+        },
+        {
+          "name": "moabi:novelty",
+          "value": "UNKNOWN"
+        }
+      ],
+      "type": "application",
+      "version": "unknown"
+    },
+    {
+      "bom-ref": "moabi/msedge.exe@sha256:f13f03c60b48664b",
+      "components": [
+        {
+          "bom-ref": "moabi/dll:msedge_elf.dll",
+          "name": "msedge_elf.dll",
+          "scope": "required",
+          "type": "library",
+          "version": "unknown"
+        },
+        {
+          "bom-ref": "moabi/dll:kernel32.dll",
+          "name": "kernel32.dll",
+          "scope": "required",
+          "type": "library",
+          "version": "unknown"
+        },
+        {
+          "bom-ref": "moabi/dll:ntdll.dll",
+          "name": "ntdll.dll",
+          "scope": "required",
+          "type": "library",
+          "version": "unknown"
+        }
+      ],
+      "evidence": {
+        "identity": {
+          "confidence": 1,
+          "field": "hash",
+          "methods": [
+            {
+              "confidence": 1,
+              "technique": "hash-comparison",
+              "value": "f13f03c60b48664b5ab5b294c32feb1ff2fd632f206ee6732d3ddffb919a8b57"
+            }
+          ]
+        }
+      },
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "f13f03c60b48664b5ab5b294c32feb1ff2fd632f206ee6732d3ddffb919a8b57"
+        }
+      ],
+      "name": "msedge.exe",
+      "properties": [
+        {
+          "name": "moabi:format",
+          "value": "pe"
+        },
+        {
+          "name": "moabi:path",
+          "value": "/mnt/c/Program Files (x86)/Microsoft/Edge/Application/msedge.exe"
+        },
+        {
+          "name": "moabi:size",
+          "value": "4970824"
+        },
+        {
+          "name": "moabi:machine",
+          "value": "x86_64"
+        },
+        {
+          "name": "moabi:subsystem",
+          "value": "windows_gui"
+        },
+        {
+          "name": "moabi:sections",
+          "value": "12"
+        },
+        {
+          "name": "moabi:imports_count",
+          "value": "262"
+        },
+        {
+          "name": "moabi:dll_count",
+          "value": "3"
+        },
+        {
+          "name": "moabi:entropy",
+          "value": "6.4711"
+        },
+        {
+          "name": "moabi:risk",
+          "value": "SUSPICIOUS"
+        },
+        {
+          "name": "moabi:novelty",
+          "value": "N/A"
+        }
+      ],
+      "type": "application",
+      "version": "unknown"
+    },
+    {
+      "bom-ref": "moabi/msedge.VisualElementsManifest.xml@sha256:333bff1027a31631",
+      "evidence": {
+        "identity": {
+          "confidence": 1,
+          "field": "hash",
+          "methods": [
+            {
+              "confidence": 1,
+              "technique": "hash-comparison",
+              "value": "333bff1027a31631012fc58f17b7abe5aa234a7016979827a31deed2fe6bc9ad"
+            }
+          ]
+        }
+      },
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "333bff1027a31631012fc58f17b7abe5aa234a7016979827a31deed2fe6bc9ad"
+        }
+      ],
+      "name": "msedge.VisualElementsManifest.xml",
+      "properties": [
+        {
+          "name": "moabi:format",
+          "value": "other"
+        },
+        {
+          "name": "moabi:path",
+          "value": "/mnt/c/Program Files (x86)/Microsoft/Edge/Application/msedge.VisualElementsManifest.xml"
+        },
+        {
+          "name": "moabi:size",
+          "value": "410"
+        },
+        {
+          "name": "moabi:risk",
+          "value": "NOTABLE"
+        },
+        {
+          "name": "moabi:novelty",
+          "value": "UNKNOWN"
+        }
+      ],
+      "type": "application",
+      "version": "unknown"
+    },
+    {
+      "bom-ref": "moabi/msedge_proxy.exe@sha256:a02c6bbc8c17b621",
+      "components": [
+        {
+          "bom-ref": "moabi/dll:dbghelp.dll",
+          "name": "dbghelp.dll",
+          "scope": "required",
+          "type": "library",
+          "version": "unknown"
+        },
+        {
+          "bom-ref": "moabi/dll:oleaut32.dll",
+          "name": "oleaut32.dll",
+          "scope": "required",
+          "type": "library",
+          "version": "unknown"
+        },
+        {
+          "bom-ref": "moabi/dll:shlwapi.dll",
+          "name": "shlwapi.dll",
+          "scope": "required",
+          "type": "library",
+          "version": "unknown"
+        },
+        {
+          "bom-ref": "moabi/dll:kernel32.dll",
+          "name": "kernel32.dll",
+          "scope": "required",
+          "type": "library",
+          "version": "unknown"
+        },
+        {
+          "bom-ref": "moabi/dll:ntdll.dll",
+          "name": "ntdll.dll",
+          "scope": "required",
+          "type": "library",
+          "version": "unknown"
+        },
+        {
+          "bom-ref": "moabi/dll:api-ms-win-core-winrt-error-l1-1-0.dll",
+          "name": "api-ms-win-core-winrt-error-l1-1-0.dll",
+          "scope": "required",
+          "type": "library",
+          "version": "unknown"
+        },
+        {
+          "bom-ref": "moabi/dll:api-ms-win-core-winrt-string-l1-1-0.dll",
+          "name": "api-ms-win-core-winrt-string-l1-1-0.dll",
+          "scope": "required",
+          "type": "library",
+          "version": "unknown"
+        },
+        {
+          "bom-ref": "moabi/dll:api-ms-win-core-winrt-l1-1-0.dll",
+          "name": "api-ms-win-core-winrt-l1-1-0.dll",
+          "scope": "required",
+          "type": "library",
+          "version": "unknown"
+        },
+        {
+          "bom-ref": "moabi/dll:api-ms-win-core-synch-l1-2-0.dll",
+          "name": "api-ms-win-core-synch-l1-2-0.dll",
+          "scope": "required",
+          "type": "library",
+          "version": "unknown"
+        }
+      ],
+      "evidence": {
+        "identity": {
+          "confidence": 1,
+          "field": "hash",
+          "methods": [
+            {
+              "confidence": 1,
+              "technique": "hash-comparison",
+              "value": "a02c6bbc8c17b621118d60d45a3a5cf9501e364f8e91af2fa4589ec7099f1d0c"
+            }
+          ]
+        }
+      },
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "a02c6bbc8c17b621118d60d45a3a5cf9501e364f8e91af2fa4589ec7099f1d0c"
+        }
+      ],
+      "name": "msedge_proxy.exe",
+      "properties": [
+        {
+          "name": "moabi:format",
+          "value": "pe"
+        },
+        {
+          "name": "moabi:path",
+          "value": "/mnt/c/Program Files (x86)/Microsoft/Edge/Application/msedge_proxy.exe"
+        },
+        {
+          "name": "moabi:size",
+          "value": "2597704"
+        },
+        {
+          "name": "moabi:machine",
+          "value": "x86_64"
+        },
+        {
+          "name": "moabi:subsystem",
+          "value": "windows_gui"
+        },
+        {
+          "name": "moabi:sections",
+          "value": "10"
+        },
+        {
+          "name": "moabi:imports_count",
+          "value": "203"
+        },
+        {
+          "name": "moabi:dll_count",
+          "value": "9"
+        },
+        {
+          "name": "moabi:entropy",
+          "value": "6.5460"
+        },
+        {
+          "name": "moabi:risk",
+          "value": "SUSPICIOUS"
+        },
+        {
+          "name": "moabi:novelty",
+          "value": "N/A"
+        }
+      ],
+      "type": "application",
+      "version": "unknown"
+    },
+    {
+      "bom-ref": "moabi/pwahelper.exe@sha256:b2520ebdef62d47b",
+      "components": [
+        {
+          "bom-ref": "moabi/dll:api-ms-win-core-winrt-string-l1-1-0.dll",
+          "name": "api-ms-win-core-winrt-string-l1-1-0.dll",
+          "scope": "required",
+          "type": "library",
+          "version": "unknown"
+        },
+        {
+          "bom-ref": "moabi/dll:api-ms-win-core-winrt-l1-1-0.dll",
+          "name": "api-ms-win-core-winrt-l1-1-0.dll",
+          "scope": "required",
+          "type": "library",
+          "version": "unknown"
+        },
+        {
+          "bom-ref": "moabi/dll:dbghelp.dll",
+          "name": "dbghelp.dll",
+          "scope": "required",
+          "type": "library",
+          "version": "unknown"
+        },
+        {
+          "bom-ref": "moabi/dll:oleaut32.dll",
+          "name": "oleaut32.dll",
+          "scope": "required",
+          "type": "library",
+          "version": "unknown"
+        },
+        {
+          "bom-ref": "moabi/dll:shell32.dll",
+          "name": "shell32.dll",
+          "scope": "required",
+          "type": "library",
+          "version": "unknown"
+        },
+        {
+          "bom-ref": "moabi/dll:user32.dll",
+          "name": "user32.dll",
+          "scope": "required",
+          "type": "library",
+          "version": "unknown"
+        },
+        {
+          "bom-ref": "moabi/dll:winmm.dll",
+          "name": "winmm.dll",
+          "scope": "required",
+          "type": "library",
+          "version": "unknown"
+        },
+        {
+          "bom-ref": "moabi/dll:kernel32.dll",
+          "name": "kernel32.dll",
+          "scope": "required",
+          "type": "library",
+          "version": "unknown"
+        },
+        {
+          "bom-ref": "moabi/dll:ole32.dll",
+          "name": "ole32.dll",
+          "scope": "required",
+          "type": "library",
+          "version": "unknown"
+        }
+      ],
+      "evidence": {
+        "identity": {
+          "confidence": 1,
+          "field": "hash",
+          "methods": [
+            {
+              "confidence": 1,
+              "technique": "hash-comparison",
+              "value": "b2520ebdef62d47b73d9ac80d2ab58aff124f2a2189f80e1f967abcd1fe60abb"
+            }
+          ]
+        }
+      },
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "b2520ebdef62d47b73d9ac80d2ab58aff124f2a2189f80e1f967abcd1fe60abb"
+        }
+      ],
+      "name": "pwahelper.exe",
+      "properties": [
+        {
+          "name": "moabi:format",
+          "value": "pe"
+        },
+        {
+          "name": "moabi:path",
+          "value": "/mnt/c/Program Files (x86)/Microsoft/Edge/Application/pwahelper.exe"
+        },
+        {
+          "name": "moabi:size",
+          "value": "2489160"
+        },
+        {
+          "name": "moabi:machine",
+          "value": "x86_64"
+        },
+        {
+          "name": "moabi:subsystem",
+          "value": "windows_gui"
+        },
+        {
+          "name": "moabi:sections",
+          "value": "10"
+        },
+        {
+          "name": "moabi:imports_count",
+          "value": "191"
+        },
+        {
+          "name": "moabi:dll_count",
+          "value": "9"
+        },
+        {
+          "name": "moabi:entropy",
+          "value": "6.5539"
+        },
+        {
+          "name": "moabi:risk",
+          "value": "SUSPICIOUS"
+        },
+        {
+          "name": "moabi:novelty",
+          "value": "N/A"
+        }
+      ],
+      "type": "application",
+      "version": "unknown"
+    }
+  ],
+  "metadata": {
+    "timestamp": "2026-07-25T17:39:12Z",
+    "tools": {
+      "components": [
+        {
+          "bom-ref": "moabi-sbom@2.3",
+          "name": "moabi-sbom",
+          "type": "application",
+          "vendor": "MOABI",
+          "version": "2.3"
+        }
+      ]
+    }
+  },
+  "serialNumber": "urn:uuid:00000000-0000-4000-8000-000000000000",
+  "specVersion": "1.6",
+  "version": 1
+}

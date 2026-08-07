@@ -1,0 +1,21 @@
+{
+  "bomFormat": "CycloneDX",
+  "components": {},
+  "metadata": {
+    "timestamp": "2026-07-25T17:25:35Z",
+    "tools": {
+      "components": [
+        {
+          "bom-ref": "moabi-sbom@2.3",
+          "name": "moabi-sbom",
+          "type": "application",
+          "vendor": "MOABI",
+          "version": "2.3"
+        }
+      ]
+    }
+  },
+  "serialNumber": "urn:uuid:00000000-0000-4000-8000-000000000000",
+  "specVersion": "1.6",
+  "version": 1
+}

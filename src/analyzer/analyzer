@@ -1,0 +1,242 @@
+-- src/analyzer/disasm.lua
+-- LuaJIT FFI bindings to Capstone for rapid binary disassembly
+-- Part of the Moabi research suite
+
+local ffi = require("ffi")
+
+-- Load Capstone from our local install
+local MOABI_ROOT = os.getenv("MOABI_ROOT") or "/mnt/d/moabi"
+local cs = ffi.load(MOABI_ROOT .. "/lib/libcapstone.so")
+
+ffi.cdef[[
+    typedef size_t csh;
+
+    typedef enum cs_arch {
+        CS_ARCH_X86 = 3
+    } cs_arch;
+
+    typedef enum cs_mode {
+        CS_MODE_32 = 4,
+        CS_MODE_64 = 8
+    } cs_mode;
+
+    typedef struct cs_insn {
+        unsigned int id;
+        uint64_t address;
+        uint16_t size;
+        uint8_t bytes[24];
+        char mnemonic[32];
+        char op_str[160];
+        // ... detail follows but we don't need it for basic disasm
+    } cs_insn;
+
+    int cs_open(int arch, int mode, csh *handle);
+    int cs_close(csh *handle);
+    size_t cs_disasm(csh handle, const uint8_t *code, size_t code_size,
+                     uint64_t address, size_t count, cs_insn **insn);
+    void cs_free(cs_insn *insn, size_t count);
+    const char *cs_strerror(int code);
+    int cs_version(int *major, int *minor);
+]]
+
+-- Constants
+local CS_ARCH_X86 = 3
+local CS_MODE_64 = 8
+
+local Disassembler = {}
+Disassembler.__index = Disassembler
+
+function Disassembler.new(arch, mode)
+    local self = setmetatable({}, Disassembler)
+    local handle = ffi.new("csh[1]")
+
+    local err = cs.cs_open(arch or CS_ARCH_X86, mode or CS_MODE_64, handle)
+    if err ~= 0 then
+        error("cs_open failed: " .. ffi.string(cs.cs_strerror(err)))
+    end
+
+    self.handle = handle[0]
+    return self
+end
+
+function Disassembler:disasm(code_bytes, base_addr, max_count)
+    base_addr = base_addr or 0
+    max_count = max_count or 0  -- 0 = all
+
+    local code = ffi.new("uint8_t[?]", #code_bytes)
+    ffi.copy(code, code_bytes, #code_bytes)
+
+    local insn_ptr = ffi.new("cs_insn*[1]")
+    local count = cs.cs_disasm(
+        self.handle, code, #code_bytes,
+        base_addr, max_count, insn_ptr
+    )
+
+    if count == 0 then
+        return {}
+    end
+
+    local instructions = {}
+    for i = 0, tonumber(count) - 1 do
+        local insn = insn_ptr[0][i]
+        local bytes_hex = {}
+        for j = 0, insn.size - 1 do
+            bytes_hex[#bytes_hex + 1] = string.format("%02x", insn.bytes[j])
+        end
+
+        instructions[#instructions + 1] = {
+            address = tonumber(insn.address),
+            size = insn.size,
+            mnemonic = ffi.string(insn.mnemonic),
+            op_str = ffi.string(insn.op_str),
+            bytes = table.concat(bytes_hex, " "),
+        }
+    end
+
+    cs.cs_free(insn_ptr[0], count)
+    return instructions
+end
+
+function Disassembler:close()
+    if self.handle then
+        cs.cs_close(ffi.new("csh[1]", self.handle))
+        self.handle = nil
+    end
+end
+
+-- ================================================================
+-- Analysis functions for CRA-relevant checks
+-- ================================================================
+
+local function find_suspicious_patterns(instructions)
+    local findings = {}
+
+    for i, insn in ipairs(instructions) do
+        -- Self-modifying code indicators
+        if insn.mnemonic == "syscall" then
+            -- Check if preceded by mprotect setup (rax=10)
+            if i >= 3 then
+                local prev = instructions[i-1]
+                if prev and prev.mnemonic == "mov" and
+                   prev.op_str:match("eax") and prev.op_str:match("0xa") then
+                    findings[#findings + 1] = {
+                        type = "SELF_MODIFY",
+                        address = insn.address,
+                        detail = "Possible mprotect+write pattern (self-modifying code)",
+                        severity = "HIGH",
+                    }
+                end
+            end
+        end
+
+        -- Anti-debugging: int3 sequences
+        if insn.mnemonic == "int3" then
+            findings[#findings + 1] = {
+                type = "ANTI_DEBUG",
+                address = insn.address,
+                detail = "INT3 breakpoint instruction (anti-debug or padding)",
+                severity = "LOW",
+            }
+        end
+
+        -- Suspicious: direct port I/O (ring0 or VM detection)
+        if insn.mnemonic == "in" or insn.mnemonic == "out" then
+            findings[#findings + 1] = {
+                type = "HW_ACCESS",
+                address = insn.address,
+                detail = string.format("Direct port I/O: %s %s", insn.mnemonic, insn.op_str),
+                severity = "MEDIUM",
+            }
+        end
+
+        -- CPUID (often used for VM/hypervisor detection)
+        if insn.mnemonic == "cpuid" then
+            findings[#findings + 1] = {
+                type = "FINGERPRINT",
+                address = insn.address,
+                detail = "CPUID instruction (environment fingerprinting)",
+                severity = "INFO",
+            }
+        end
+
+        -- RDTSC (timing-based anti-debug)
+        if insn.mnemonic == "rdtsc" then
+            findings[#findings + 1] = {
+                type = "TIMING",
+                address = insn.address,
+                detail = "RDTSC instruction (timing check / anti-debug)",
+                severity = "MEDIUM",
+            }
+        end
+    end
+
+    return findings
+end
+
+-- ================================================================
+-- Main — if run as script
+-- ================================================================
+
+if arg then
+    local filename = arg[1]
+    if not filename then
+        print("Usage: luajit disasm.lua <binary-file> [offset] [length]")
+        print("  Disassembles and scans for suspicious instruction patterns.")
+        os.exit(1)
+    end
+
+    local offset = tonumber(arg[2]) or 0
+    local length = tonumber(arg[3]) or 4096
+
+    local f = io.open(filename, "rb")
+    if not f then
+        print("Error: cannot open " .. filename)
+        os.exit(1)
+    end
+
+    f:seek("set", offset)
+    local code = f:read(length)
+    f:close()
+
+    if not code or #code == 0 then
+        print("Error: no data read")
+        os.exit(1)
+    end
+
+    print(string.format("\n[Moabi Disassembler] %s (offset=0x%x, len=%d)\n",
+        filename, offset, #code))
+
+    local d = Disassembler.new(CS_ARCH_X86, CS_MODE_64)
+    local instructions = d:disasm(code, offset)
+
+    -- Print disassembly
+    print(string.format("  %-16s  %-24s  %-8s  %s", "ADDRESS", "BYTES", "MNEMONIC", "OPERANDS"))
+    print(string.rep("-", 80))
+
+    for _, insn in ipairs(instructions) do
+        print(string.format("  0x%012x  %-24s  %-8s  %s",
+            insn.address, insn.bytes, insn.mnemonic, insn.op_str))
+    end
+
+    -- Scan for suspicious patterns
+    local findings = find_suspicious_patterns(instructions)
+
+    if #findings > 0 then
+        print(string.format("\n[!] %d suspicious pattern(s) detected:\n", #findings))
+        for _, f in ipairs(findings) do
+            print(string.format("  [%s] 0x%x — %s (%s)",
+                f.severity, f.address, f.detail, f.type))
+        end
+    else
+        print("\n[✓] No suspicious instruction patterns detected.")
+    end
+
+    print(string.format("\nInstructions disassembled: %d\n", #instructions))
+
+    d:close()
+end
+
+return {
+    Disassembler = Disassembler,
+    find_suspicious_patterns = find_suspicious_patterns,
+}

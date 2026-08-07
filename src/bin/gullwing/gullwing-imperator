@@ -1,0 +1,150 @@
+#!/usr/bin/env luajit
+--============================================================================
+--  GULLWING-IMPERATOR v1.0 — Unified Command Center
+--  One binary to rule them all: reflect, watch, attest, delta, compare.
+--============================================================================
+
+local SRC = "/mnt/d/moabi/src"
+package.path = SRC .. "/?.lua;" .. package.path
+
+-- ============================================================================
+--  SUBCOMMAND DISPATCH
+-- ============================================================================
+
+local COMMANDS = {
+    reflect = {
+        help = "Run 8-layer convergent analysis on a binary",
+        usage = "reflect TARGET [--static-only] [--deep-memory] [--json] [--model PATH]",
+        module = "moabi-reflect",
+    },
+    watch = {
+        help = "Monitor a directory for binary changes (auto-delta on change)",
+        usage = "watch DIRECTORY [THRESHOLD]",
+        module = "gullwing-watch",
+    },
+    delta = {
+        help = "Compare two evidence JSON files for supply chain changes",
+        usage = "delta OLD.json NEW.json",
+        module = "moabi-delta",
+    },
+    attest = {
+        help = "Cryptographic evidence signing and verification",
+        usage = "attest generate|sign|verify [args...]",
+        module = "gullwing-attest",
+    },
+    compare = {
+        help = "Score cross-vendor binary equivalence",
+        usage = "compare A.json B.json",
+        module = "gullwing-compare",
+    },
+    train = {
+        help = "Train or validate the ML model",
+        usage = "train TRAINING_DIR OUTPUT_MODEL  |  validate MODEL  |  classify MODEL TARGET",
+        module = "moabi-ml",
+    },
+    sbom = {
+        help = "Generate CycloneDX 1.6 SBOM from a directory",
+        usage = "sbom DIRECTORY [--recursive] [--out PATH]",
+        module = "moabi-sbom",
+    },
+    pe = {
+        help = "Analyze a Windows PE binary",
+        usage = "pe TARGET",
+        module = "moabi-pe",
+    },
+    qemu = {
+        help = "Run cross-architecture QEMU emulation",
+        usage = "qemu TARGET [--arch arm64|riscv64] [--timeout SECONDS]",
+        module = "moabi-qemu",
+    },
+    modelbom = {
+        help = "Generate cryptographic Model-BOM",
+        usage = "modelbom MODEL [--out PATH]",
+        module = "moabi-model-bom",
+    },
+    view = {
+        help = "Dashboard viewer for CycloneDX JSON",
+        usage = "view CDX_JSON_FILE",
+        module = "moabi-view",
+    },
+}
+
+-- ============================================================================
+--  MAIN
+-- ============================================================================
+
+local function usage()
+    print("GULLWING-IMPERATOR v1.0 — Unified Binary Intelligence Platform")
+    print()
+    print("Usage: gullwing COMMAND [args...]")
+    print()
+    print("Commands:")
+    local keys = {}
+    for k in pairs(COMMANDS) do keys[#keys + 1] = k end
+    table.sort(keys)
+    for _, k in ipairs(keys) do
+        local c = COMMANDS[k]
+        print(string.format("  %-12s %s", k, c.help))
+    end
+    print()
+    print("Run 'gullwing COMMAND --help' for detailed options.")
+    print()
+    print("Examples:")
+    print("  gullwing reflect /usr/bin/ls --json")
+    print("  gullwing watch /usr/bin 5.0")
+    print("  gullwing attest sign reports/ls.evidence.json")
+    print("  gullwing compare a.json b.json")
+    print("  gullwing delta old.json new.json")
+end
+
+local function main()
+    if not arg[1] or arg[1] == "-h" or arg[1] == "--help" then
+        usage()
+        return 0
+    end
+
+    local cmd = arg[1]
+    local config = COMMANDS[cmd]
+
+    if not config then
+        io.stderr:write("Unknown command: " .. cmd .. "\n\n")
+        usage()
+        return 1
+    end
+
+    -- Load the module
+    local ok, mod = pcall(require, config.module)
+    if not ok then
+        io.stderr:write("Cannot load module '" .. config.module .. "': " .. tostring(mod) .. "\n")
+        return 1
+    end
+
+    -- Shift args: arg[2] becomes arg[1] for the sub-module
+    local sub_args = {}
+    for i = 2, #arg do
+        sub_args[i - 1] = arg[i]
+    end
+
+    -- Monkey-patch arg for the sub-module's main()
+    local _arg = arg
+    arg = sub_args
+    local ok2, ret = pcall(mod.main or function()
+        io.stderr:write("Module '" .. config.module .. "' has no main() function\n")
+        return 1
+    end)
+    arg = _arg
+
+    if not ok2 then
+        io.stderr:write("\nERROR: " .. tostring(ret) .. "\n")
+        return 1
+    end
+
+    return ret or 0
+end
+
+local ok, ret = pcall(main)
+if not ok then
+    io.stderr:write("\nERROR: " .. tostring(ret) .. "\n")
+    os.exit(1)
+end
+os.exit(ret or 0)

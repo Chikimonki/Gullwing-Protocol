@@ -1,0 +1,954 @@
+{
+  "bomFormat": "CycloneDX",
+  "components": [
+    {
+      "bom-ref": "moabi/libmoabi-arm64.so@sha256:a99f964f0b5514b6",
+      "evidence": {
+        "identity": {
+          "confidence": 1,
+          "field": "hash",
+          "methods": [
+            {
+              "confidence": 1,
+              "technique": "hash-comparison",
+              "value": "a99f964f0b5514b6807666c2cf596847a8b896e036f13c602c8073908fc62531"
+            }
+          ]
+        }
+      },
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "a99f964f0b5514b6807666c2cf596847a8b896e036f13c602c8073908fc62531"
+        }
+      ],
+      "name": "libmoabi-arm64.so",
+      "properties": [
+        {
+          "name": "moabi:format",
+          "value": "elf"
+        },
+        {
+          "name": "moabi:size",
+          "value": "1055192"
+        },
+        {
+          "name": "moabi:path",
+          "value": "/mnt/d/moabi/bin/libmoabi-arm64.so"
+        },
+        {
+          "name": "moabi:entropy",
+          "value": "4.9227"
+        },
+        {
+          "name": "moabi:sections",
+          "value": "32"
+        },
+        {
+          "name": "moabi:imports_count",
+          "value": "1"
+        },
+        {
+          "name": "moabi:exports_count",
+          "value": "1755"
+        },
+        {
+          "name": "moabi:elf_class",
+          "value": "ELF64"
+        }
+      ],
+      "type": "application",
+      "version": "unknown"
+    },
+    {
+      "bom-ref": "moabi/libmoabi-arm64.so.o@sha256:252ae8b3911a14fa",
+      "evidence": {
+        "identity": {
+          "confidence": 1,
+          "field": "hash",
+          "methods": [
+            {
+              "confidence": 1,
+              "technique": "hash-comparison",
+              "value": "252ae8b3911a14fa8ef81c723d7eb888fbf8e48fefa52fcfe1e4dc5f3bc88f5d"
+            }
+          ]
+        }
+      },
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "252ae8b3911a14fa8ef81c723d7eb888fbf8e48fefa52fcfe1e4dc5f3bc88f5d"
+        }
+      ],
+      "name": "libmoabi-arm64.so.o",
+      "properties": [
+        {
+          "name": "moabi:format",
+          "value": "elf"
+        },
+        {
+          "name": "moabi:size",
+          "value": "281760"
+        },
+        {
+          "name": "moabi:path",
+          "value": "/mnt/d/moabi/bin/libmoabi-arm64.so.o"
+        },
+        {
+          "name": "moabi:entropy",
+          "value": "4.2029"
+        },
+        {
+          "name": "moabi:sections",
+          "value": "34"
+        },
+        {
+          "name": "moabi:imports_count",
+          "value": "0"
+        },
+        {
+          "name": "moabi:exports_count",
+          "value": "120"
+        },
+        {
+          "name": "moabi:elf_class",
+          "value": "ELF64"
+        }
+      ],
+      "type": "application",
+      "version": "unknown"
+    },
+    {
+      "bom-ref": "moabi/libmoabi-riscv64.so@sha256:c1ffe668b0a0969c",
+      "evidence": {
+        "identity": {
+          "confidence": 1,
+          "field": "hash",
+          "methods": [
+            {
+              "confidence": 1,
+              "technique": "hash-comparison",
+              "value": "c1ffe668b0a0969c3b2a2245a14807a12be57c96d3433cec3add0058deb24cf9"
+            }
+          ]
+        }
+      },
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "c1ffe668b0a0969c3b2a2245a14807a12be57c96d3433cec3add0058deb24cf9"
+        }
+      ],
+      "name": "libmoabi-riscv64.so",
+      "properties": [
+        {
+          "name": "moabi:format",
+          "value": "elf"
+        },
+        {
+          "name": "moabi:size",
+          "value": "1979632"
+        },
+        {
+          "name": "moabi:path",
+          "value": "/mnt/d/moabi/bin/libmoabi-riscv64.so"
+        },
+        {
+          "name": "moabi:entropy",
+          "value": "3.6155"
+        },
+        {
+          "name": "moabi:sections",
+          "value": "33"
+        },
+        {
+          "name": "moabi:imports_count",
+          "value": "1"
+        },
+        {
+          "name": "moabi:exports_count",
+          "value": "38756"
+        },
+        {
+          "name": "moabi:elf_class",
+          "value": "ELF64"
+        }
+      ],
+      "type": "application",
+      "version": "unknown"
+    },
+    {
+      "bom-ref": "moabi/libmoabi-riscv64.so.o@sha256:61148ce900cf721a",
+      "evidence": {
+        "identity": {
+          "confidence": 1,
+          "field": "hash",
+          "methods": [
+            {
+              "confidence": 1,
+              "technique": "hash-comparison",
+              "value": "61148ce900cf721a2308eb5a5e6cfbbafba9a73115c2c7b3b213e9b8ca08cec8"
+            }
+          ]
+        }
+      },
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "61148ce900cf721a2308eb5a5e6cfbbafba9a73115c2c7b3b213e9b8ca08cec8"
+        }
+      ],
+      "name": "libmoabi-riscv64.so.o",
+      "properties": [
+        {
+          "name": "moabi:format",
+          "value": "elf"
+        },
+        {
+          "name": "moabi:size",
+          "value": "662816"
+        },
+        {
+          "name": "moabi:path",
+          "value": "/mnt/d/moabi/bin/libmoabi-riscv64.so.o"
+        },
+        {
+          "name": "moabi:entropy",
+          "value": "2.7922"
+        },
+        {
+          "name": "moabi:sections",
+          "value": "37"
+        },
+        {
+          "name": "moabi:imports_count",
+          "value": "0"
+        },
+        {
+          "name": "moabi:exports_count",
+          "value": "6118"
+        },
+        {
+          "name": "moabi:elf_class",
+          "value": "ELF64"
+        }
+      ],
+      "type": "application",
+      "version": "unknown"
+    },
+    {
+      "bom-ref": "moabi/libmoabi.so@sha256:6c04ca58125d6268",
+      "evidence": {
+        "identity": {
+          "confidence": 1,
+          "field": "hash",
+          "methods": [
+            {
+              "confidence": 1,
+              "technique": "hash-comparison",
+              "value": "6c04ca58125d62686fcf895473eabcfc545c64c25ee0aa79db3ecea78003cf2c"
+            }
+          ]
+        }
+      },
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "6c04ca58125d62686fcf895473eabcfc545c64c25ee0aa79db3ecea78003cf2c"
+        }
+      ],
+      "name": "libmoabi.so",
+      "properties": [
+        {
+          "name": "moabi:format",
+          "value": "elf"
+        },
+        {
+          "name": "moabi:size",
+          "value": "1028208"
+        },
+        {
+          "name": "moabi:path",
+          "value": "/mnt/d/moabi/bin/libmoabi.so"
+        },
+        {
+          "name": "moabi:entropy",
+          "value": "5.0615"
+        },
+        {
+          "name": "moabi:sections",
+          "value": "32"
+        },
+        {
+          "name": "moabi:imports_count",
+          "value": "1"
+        },
+        {
+          "name": "moabi:exports_count",
+          "value": "990"
+        },
+        {
+          "name": "moabi:elf_class",
+          "value": "ELF64"
+        }
+      ],
+      "type": "application",
+      "version": "unknown"
+    },
+    {
+      "bom-ref": "moabi/libmoabi.so.o@sha256:addc07893d552baf",
+      "evidence": {
+        "identity": {
+          "confidence": 1,
+          "field": "hash",
+          "methods": [
+            {
+              "confidence": 1,
+              "technique": "hash-comparison",
+              "value": "addc07893d552bafb7c22f7ec4f5fcd80461fe3bd4076cfa30a84bb768f8ccc7"
+            }
+          ]
+        }
+      },
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "addc07893d552bafb7c22f7ec4f5fcd80461fe3bd4076cfa30a84bb768f8ccc7"
+        }
+      ],
+      "name": "libmoabi.so.o",
+      "properties": [
+        {
+          "name": "moabi:format",
+          "value": "elf"
+        },
+        {
+          "name": "moabi:size",
+          "value": "315896"
+        },
+        {
+          "name": "moabi:path",
+          "value": "/mnt/d/moabi/bin/libmoabi.so.o"
+        },
+        {
+          "name": "moabi:entropy",
+          "value": "4.1986"
+        },
+        {
+          "name": "moabi:sections",
+          "value": "35"
+        },
+        {
+          "name": "moabi:imports_count",
+          "value": "0"
+        },
+        {
+          "name": "moabi:exports_count",
+          "value": "136"
+        },
+        {
+          "name": "moabi:elf_class",
+          "value": "ELF64"
+        }
+      ],
+      "type": "application",
+      "version": "unknown"
+    },
+    {
+      "bom-ref": "moabi/moabi-baseline@sha256:74623ec953438af1",
+      "evidence": {
+        "identity": {
+          "confidence": 1,
+          "field": "hash",
+          "methods": [
+            {
+              "confidence": 1,
+              "technique": "hash-comparison",
+              "value": "74623ec953438af14ca9782712b0c59093d38b85cdc7573e3f6704df5c43d899"
+            }
+          ]
+        }
+      },
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "74623ec953438af14ca9782712b0c59093d38b85cdc7573e3f6704df5c43d899"
+        }
+      ],
+      "name": "moabi-baseline",
+      "properties": [
+        {
+          "name": "moabi:format",
+          "value": "elf"
+        },
+        {
+          "name": "moabi:size",
+          "value": "2356232"
+        },
+        {
+          "name": "moabi:path",
+          "value": "/mnt/d/moabi/bin/moabi-baseline"
+        },
+        {
+          "name": "moabi:entropy",
+          "value": "5.2102"
+        },
+        {
+          "name": "moabi:sections",
+          "value": "21"
+        },
+        {
+          "name": "moabi:imports_count",
+          "value": "0"
+        },
+        {
+          "name": "moabi:exports_count",
+          "value": "633"
+        },
+        {
+          "name": "moabi:elf_class",
+          "value": "ELF64"
+        }
+      ],
+      "type": "application",
+      "version": "unknown"
+    },
+    {
+      "bom-ref": "moabi/moabi-caves@sha256:8bf6f5ce4d1e930b",
+      "evidence": {
+        "identity": {
+          "confidence": 1,
+          "field": "hash",
+          "methods": [
+            {
+              "confidence": 1,
+              "technique": "hash-comparison",
+              "value": "8bf6f5ce4d1e930b25a86133b7335ce8a7b5f706a87e04d8bc335a194fd64e52"
+            }
+          ]
+        }
+      },
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "8bf6f5ce4d1e930b25a86133b7335ce8a7b5f706a87e04d8bc335a194fd64e52"
+        }
+      ],
+      "name": "moabi-caves",
+      "properties": [
+        {
+          "name": "moabi:format",
+          "value": "elf"
+        },
+        {
+          "name": "moabi:size",
+          "value": "2217312"
+        },
+        {
+          "name": "moabi:path",
+          "value": "/mnt/d/moabi/bin/moabi-caves"
+        },
+        {
+          "name": "moabi:entropy",
+          "value": "5.1586"
+        },
+        {
+          "name": "moabi:sections",
+          "value": "21"
+        },
+        {
+          "name": "moabi:imports_count",
+          "value": "0"
+        },
+        {
+          "name": "moabi:exports_count",
+          "value": "427"
+        },
+        {
+          "name": "moabi:elf_class",
+          "value": "ELF64"
+        }
+      ],
+      "type": "application",
+      "version": "unknown"
+    },
+    {
+      "bom-ref": "moabi/moabi-elfparse@sha256:70ff06e0c7ba14b2",
+      "evidence": {
+        "identity": {
+          "confidence": 1,
+          "field": "hash",
+          "methods": [
+            {
+              "confidence": 1,
+              "technique": "hash-comparison",
+              "value": "70ff06e0c7ba14b2564ddaf70f5d20255d51eae0112d52e1999b25c632a30db4"
+            }
+          ]
+        }
+      },
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "70ff06e0c7ba14b2564ddaf70f5d20255d51eae0112d52e1999b25c632a30db4"
+        }
+      ],
+      "name": "moabi-elfparse",
+      "properties": [
+        {
+          "name": "moabi:format",
+          "value": "elf"
+        },
+        {
+          "name": "moabi:size",
+          "value": "2082808"
+        },
+        {
+          "name": "moabi:path",
+          "value": "/mnt/d/moabi/bin/moabi-elfparse"
+        },
+        {
+          "name": "moabi:entropy",
+          "value": "5.0921"
+        },
+        {
+          "name": "moabi:sections",
+          "value": "21"
+        },
+        {
+          "name": "moabi:imports_count",
+          "value": "0"
+        },
+        {
+          "name": "moabi:exports_count",
+          "value": "445"
+        },
+        {
+          "name": "moabi:elf_class",
+          "value": "ELF64"
+        }
+      ],
+      "type": "application",
+      "version": "unknown"
+    },
+    {
+      "bom-ref": "moabi/moabi-entropy@sha256:cf9b1ccff08c358c",
+      "evidence": {
+        "identity": {
+          "confidence": 1,
+          "field": "hash",
+          "methods": [
+            {
+              "confidence": 1,
+              "technique": "hash-comparison",
+              "value": "cf9b1ccff08c358c940764a44d00190a807d9699c8e0d29184bbba1e62795e27"
+            }
+          ]
+        }
+      },
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "cf9b1ccff08c358c940764a44d00190a807d9699c8e0d29184bbba1e62795e27"
+        }
+      ],
+      "name": "moabi-entropy",
+      "properties": [
+        {
+          "name": "moabi:format",
+          "value": "elf"
+        },
+        {
+          "name": "moabi:size",
+          "value": "2050704"
+        },
+        {
+          "name": "moabi:path",
+          "value": "/mnt/d/moabi/bin/moabi-entropy"
+        },
+        {
+          "name": "moabi:entropy",
+          "value": "5.1049"
+        },
+        {
+          "name": "moabi:sections",
+          "value": "21"
+        },
+        {
+          "name": "moabi:imports_count",
+          "value": "0"
+        },
+        {
+          "name": "moabi:exports_count",
+          "value": "358"
+        },
+        {
+          "name": "moabi:elf_class",
+          "value": "ELF64"
+        }
+      ],
+      "type": "application",
+      "version": "unknown"
+    },
+    {
+      "bom-ref": "moabi/moabi-hashdeep@sha256:7f04fe8f3ee407cd",
+      "evidence": {
+        "identity": {
+          "confidence": 1,
+          "field": "hash",
+          "methods": [
+            {
+              "confidence": 1,
+              "technique": "hash-comparison",
+              "value": "7f04fe8f3ee407cd9c1e21d2260d878f3c5e4794677eaf680c756daa5e5f3b87"
+            }
+          ]
+        }
+      },
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "7f04fe8f3ee407cd9c1e21d2260d878f3c5e4794677eaf680c756daa5e5f3b87"
+        }
+      ],
+      "name": "moabi-hashdeep",
+      "properties": [
+        {
+          "name": "moabi:format",
+          "value": "elf"
+        },
+        {
+          "name": "moabi:size",
+          "value": "2126000"
+        },
+        {
+          "name": "moabi:path",
+          "value": "/mnt/d/moabi/bin/moabi-hashdeep"
+        },
+        {
+          "name": "moabi:entropy",
+          "value": "5.1077"
+        },
+        {
+          "name": "moabi:sections",
+          "value": "21"
+        },
+        {
+          "name": "moabi:imports_count",
+          "value": "0"
+        },
+        {
+          "name": "moabi:exports_count",
+          "value": "457"
+        },
+        {
+          "name": "moabi:elf_class",
+          "value": "ELF64"
+        }
+      ],
+      "type": "application",
+      "version": "unknown"
+    },
+    {
+      "bom-ref": "moabi/moabi-libify@sha256:4fde3a69b46fef47",
+      "evidence": {
+        "identity": {
+          "confidence": 1,
+          "field": "hash",
+          "methods": [
+            {
+              "confidence": 1,
+              "technique": "hash-comparison",
+              "value": "4fde3a69b46fef478f498a04cfb439ba61d14e93c808580272fa5db72b8c183e"
+            }
+          ]
+        }
+      },
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "4fde3a69b46fef478f498a04cfb439ba61d14e93c808580272fa5db72b8c183e"
+        }
+      ],
+      "name": "moabi-libify",
+      "properties": [
+        {
+          "name": "moabi:format",
+          "value": "elf"
+        },
+        {
+          "name": "moabi:size",
+          "value": "2131552"
+        },
+        {
+          "name": "moabi:path",
+          "value": "/mnt/d/moabi/bin/moabi-libify"
+        },
+        {
+          "name": "moabi:entropy",
+          "value": "5.0977"
+        },
+        {
+          "name": "moabi:sections",
+          "value": "21"
+        },
+        {
+          "name": "moabi:imports_count",
+          "value": "0"
+        },
+        {
+          "name": "moabi:exports_count",
+          "value": "464"
+        },
+        {
+          "name": "moabi:elf_class",
+          "value": "ELF64"
+        }
+      ],
+      "type": "application",
+      "version": "unknown"
+    },
+    {
+      "bom-ref": "moabi/moabi-ml.lua@sha256:5b876def50aef34a",
+      "evidence": {
+        "identity": {
+          "confidence": 1,
+          "field": "hash",
+          "methods": [
+            {
+              "confidence": 1,
+              "technique": "hash-comparison",
+              "value": "5b876def50aef34a2ef5e5d11f57c6c0b0f49a0784c0afc1a6105132759a6966"
+            }
+          ]
+        }
+      },
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "5b876def50aef34a2ef5e5d11f57c6c0b0f49a0784c0afc1a6105132759a6966"
+        }
+      ],
+      "name": "moabi-ml.lua",
+      "properties": [
+        {
+          "name": "moabi:format",
+          "value": "other"
+        },
+        {
+          "name": "moabi:size",
+          "value": "21058"
+        },
+        {
+          "name": "moabi:path",
+          "value": "/mnt/d/moabi/bin/moabi-ml.lua"
+        }
+      ],
+      "type": "application",
+      "version": "unknown"
+    },
+    {
+      "bom-ref": "moabi/moabi-report@sha256:7b88b2a2e0adc679",
+      "evidence": {
+        "identity": {
+          "confidence": 1,
+          "field": "hash",
+          "methods": [
+            {
+              "confidence": 1,
+              "technique": "hash-comparison",
+              "value": "7b88b2a2e0adc679e77a21fd87f8a43ad325cfcb47f33bafce2af17b6308be30"
+            }
+          ]
+        }
+      },
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "7b88b2a2e0adc679e77a21fd87f8a43ad325cfcb47f33bafce2af17b6308be30"
+        }
+      ],
+      "name": "moabi-report",
+      "properties": [
+        {
+          "name": "moabi:format",
+          "value": "elf"
+        },
+        {
+          "name": "moabi:size",
+          "value": "2453528"
+        },
+        {
+          "name": "moabi:path",
+          "value": "/mnt/d/moabi/bin/moabi-report"
+        },
+        {
+          "name": "moabi:entropy",
+          "value": "5.1873"
+        },
+        {
+          "name": "moabi:sections",
+          "value": "21"
+        },
+        {
+          "name": "moabi:imports_count",
+          "value": "0"
+        },
+        {
+          "name": "moabi:exports_count",
+          "value": "696"
+        },
+        {
+          "name": "moabi:elf_class",
+          "value": "ELF64"
+        }
+      ],
+      "type": "application",
+      "version": "unknown"
+    },
+    {
+      "bom-ref": "moabi/moabi-strings@sha256:b85f6a6b60acf56b",
+      "evidence": {
+        "identity": {
+          "confidence": 1,
+          "field": "hash",
+          "methods": [
+            {
+              "confidence": 1,
+              "technique": "hash-comparison",
+              "value": "b85f6a6b60acf56b13ece8c1721c7950b915a2b733093266ec0952bfc28d69c5"
+            }
+          ]
+        }
+      },
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "b85f6a6b60acf56b13ece8c1721c7950b915a2b733093266ec0952bfc28d69c5"
+        }
+      ],
+      "name": "moabi-strings",
+      "properties": [
+        {
+          "name": "moabi:format",
+          "value": "elf"
+        },
+        {
+          "name": "moabi:size",
+          "value": "2079328"
+        },
+        {
+          "name": "moabi:path",
+          "value": "/mnt/d/moabi/bin/moabi-strings"
+        },
+        {
+          "name": "moabi:entropy",
+          "value": "5.0799"
+        },
+        {
+          "name": "moabi:sections",
+          "value": "21"
+        },
+        {
+          "name": "moabi:imports_count",
+          "value": "0"
+        },
+        {
+          "name": "moabi:exports_count",
+          "value": "486"
+        },
+        {
+          "name": "moabi:elf_class",
+          "value": "ELF64"
+        }
+      ],
+      "type": "application",
+      "version": "unknown"
+    },
+    {
+      "bom-ref": "moabi/moabi-symbols@sha256:23c3ae98e5dfa991",
+      "evidence": {
+        "identity": {
+          "confidence": 1,
+          "field": "hash",
+          "methods": [
+            {
+              "confidence": 1,
+              "technique": "hash-comparison",
+              "value": "23c3ae98e5dfa991538d40f463cbe8c30bacd300f2c496f3270856cb2faf8f8c"
+            }
+          ]
+        }
+      },
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "23c3ae98e5dfa991538d40f463cbe8c30bacd300f2c496f3270856cb2faf8f8c"
+        }
+      ],
+      "name": "moabi-symbols",
+      "properties": [
+        {
+          "name": "moabi:format",
+          "value": "elf"
+        },
+        {
+          "name": "moabi:size",
+          "value": "2091992"
+        },
+        {
+          "name": "moabi:path",
+          "value": "/mnt/d/moabi/bin/moabi-symbols"
+        },
+        {
+          "name": "moabi:entropy",
+          "value": "5.0868"
+        },
+        {
+          "name": "moabi:sections",
+          "value": "21"
+        },
+        {
+          "name": "moabi:imports_count",
+          "value": "0"
+        },
+        {
+          "name": "moabi:exports_count",
+          "value": "618"
+        },
+        {
+          "name": "moabi:elf_class",
+          "value": "ELF64"
+        }
+      ],
+      "type": "application",
+      "version": "unknown"
+    }
+  ],
+  "metadata": {
+    "component": {
+      "bom-ref": "moabi-scan-20260718235138",
+      "description": "MOABI scan of /mnt/d/moabi/bin",
+      "name": "moabi-scan",
+      "type": "application",
+      "version": "1.0.0"
+    },
+    "timestamp": "2026-07-18T22:51:38Z",
+    "tools": {
+      "components": [
+        {
+          "bom-ref": "moabi-sbom@2.2",
+          "description": "In-process binary evidence generator for CycloneDX",
+          "name": "moabi-sbom",
+          "type": "application",
+          "vendor": "MOABI",
+          "version": "2.2"
+        }
+      ]
+    }
+  },
+  "serialNumber": "urn:uuid:17844150-98de-4dbe-8f00-000000000000",
+  "specVersion": "1.5",
+  "version": 1
+}

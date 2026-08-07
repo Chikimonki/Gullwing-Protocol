@@ -1,0 +1,34 @@
+================================================================
+  MOABI-DELTA — Supply Chain Differential Report
+================================================================
+
+  Old: /tmp/test_ls  (459c937b69bd76620d6d01100a0793294349c89871f4474d398efdae49fcee09)
+  New: /tmp/test_ls  (90c9437a02857838ccc0ce1ff8652691181bfb67135a1173dd276f91fa57d7ec)
+
+  Status: 12 change(s) detected
+
+  [ML]
+    ML classification changed: network_tool → text_tool (weight 3.0) ⚠
+    ML anomaly status changed: true → false (weight 2.0)
+    ML confidence shift: 100.0000 → 50.0000 (Δ=-50.0000) (weight 1.0)
+    ML distance shift: 5.8742 → 0.0950 (Δ=-5.7792) (weight 1.5)
+
+  [STRUCTURE]
+    Section count changed: 30 → 31 (weight 1.0)
+    Import count changed: 3 → 1 (weight 1.5)
+    Export count changed: 144 → 68 (weight 1.0)
+
+  [SEMANTICS]
+    libcurl dependency toggled: true → nil (weight 2.5)
+    libz dependency toggled: true → nil (weight 1.5)
+    libcurl symbols toggled: true → false (weight 2.0)
+
+  [ENTROPY_PROFILE]
+    Global entropy shift: 6.4184 → 4.7561 (Δ=-1.6624) (weight 1.5)
+    Byte mean shift: 95.0508 → 71.9623 (Δ=-23.0885) (weight 0.5)
+
+----------------------------------------------------------------
+  [VERDICT]  SUPPLY CHAIN CHANGE — CRITICAL
+  Weight: 19.0  |  Changes: 12  |  Critical: 1
+
+================================================================

@@ -1,0 +1,24 @@
+[2026-07-29 02:31:41] MONITOR | /tmp/demo_target | SUPPLY CHAIN CHANGE — NOTABLE
+  Weight: 9.5  |  Changes: 6  |  Critical: 0
+
+================================================================ — below threshold
+[2026-07-29 02:53:03] MONITOR | /tmp/demo_target | SUPPLY CHAIN CHANGE — CRITICAL
+  Weight: 16.0  |  Changes: 9  |  Critical: 1
+
+================================================================ — below threshold
+[2026-07-29 02:54:45] MONITOR | /tmp/demo_target | SUPPLY CHAIN CHANGE — CRITICAL — below threshold
+[2026-07-29 02:55:30] MONITOR | /tmp/demo_target | SUPPLY CHAIN CHANGE — CRITICAL — below threshold
+[2026-07-29 02:56:51] MONITOR | /tmp/demo_target | SUPPLY CHAIN CHANGE — CRITICAL — below threshold
+[2026-07-29 03:00:30] ALERT | /tmp/demo_target | SUPPLY CHAIN CHANGE — CRITICAL — RESPONDING
+[2026-07-29 03:00:30] QUARANTINE | /tmp/demo_target | Moved to /mnt/d/moabi/reports/quarantine/demo_target.20260729-030030
+[2026-07-29 03:00:30] ATTEST | /tmp/demo_target | Evidence signed
+[2026-07-29 03:00:30] RESTORE | /tmp/demo_target | No baseline — manual restore required
+[2026-07-29 03:59:37] ALERT | /tmp/demo_target | SUPPLY CHAIN CHANGE — CRITICAL
+  Weight: 16.0  |  Changes: 9  |  Critical: 1
+
+================================================================ — RESPONDING
+[2026-07-29 03:59:37] QUARANTINE | /tmp/demo_target | Moved to /mnt/d/moabi/reports/quarantine/demo_target.20260729-035937
+[2026-07-29 03:59:37] ATTEST | /tmp/demo_target | Evidence signed
+[2026-07-29 03:59:37] RESTORE | /tmp/demo_target | No baseline — manual restore required
+[2026-07-31 13:13:19] MONITOR | /mnt/d/moabi/reports/system.model | MODEL TAMPER DETECTED — below threshold
+[2026-07-31 13:13:52] MONITOR | /mnt/d/moabi/reports/system.model | MODEL TAMPER DETECTED — below threshold

@@ -1,0 +1,5 @@
+reports/training/shared_library/*.so filter=lfs diff=lfs merge=lfs -text
+reports/training/pe_executable/*.exe filter=lfs diff=lfs merge=lfs -text
+guest/*.iso filter=lfs diff=lfs merge=lfs -text
+src/bin/syft filter=lfs diff=lfs merge=lfs -text
+reports/training/shared_library/libLLVM* filter=lfs diff=lfs merge=lfs -text

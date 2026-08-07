@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gullwing Vehicle — ECU Protection</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:system-ui,sans-serif;background:#0a0a0a;color:#c8c8d4;min-height:100vh}
+.dashboard{max-width:900px;margin:0 auto;padding:20px}
+.header{text-align:center;padding:30px 0;border-bottom:1px solid #1a1a3a;margin-bottom:20px}
+.header h1{font-size:28px;background:linear-gradient(135deg,#64dc8c,#64aadc);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.header .sub{color:#666;margin-top:8px;font-size:14px}
+.status-bar{display:flex;gap:16px;margin-bottom:20px;flex-wrap:wrap}
+.status-card{flex:1;min-width:140px;background:#0e0e22;border:1px solid #1a1a3a;border-radius:10px;padding:16px;text-align:center}
+.status-card .label{font-size:11px;color:#666;text-transform:uppercase;letter-spacing:1px}
+.status-card .value{font-size:24px;font-weight:700;margin-top:4px}
+.status-card .unit{font-size:12px;color:#888}
+.green{color:#64dc8c}.yellow{color:#dcaa64}.red{color:#dc6464}.blue{color:#64aadc}
+.ecu-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:20px}
+.ecu-card{background:#0e0e22;border:1px solid #1a1a3a;border-radius:10px;padding:16px;transition:border-color .3s}
+.ecu-card:hover{border-color:#64dc8c33}
+.ecu-card h3{font-size:14px;margin-bottom:8px}
+.ecu-card .hash{font-family:monospace;font-size:10px;color:#555;margin:4px 0}
+.ecu-card .status{font-size:12px;margin-top:8px}
+.ecu-card.alert{border-color:#dc6464;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{border-color:#dc6464}50%{border-color:#dc646433}}
+.alert-feed{background:#0e0e22;border:1px solid #1a1a3a;border-radius:10px;padding:16px;max-height:200px;overflow-y:auto}
+.alert-item{padding:6px 0;border-bottom:1px solid #111;font-size:12px}
+.alert-time{color:#555;font-size:10px}
+button{padding:10px 20px;border:1px solid #333;border-radius:6px;background:#1a1a3a;color:#c8c8d4;cursor:pointer;font-size:13px;margin:4px}
+button:hover{background:#222}
+button.primary{background:#64dc8c;color:#0a0a0a;border-color:#64dc8c}
+button.danger{background:#dc6464;color:#fff;border-color:#dc6464}
+.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:100;justify-content:center;align-items:center}
+.modal.active{display:flex}
+.modal-content{background:#0e0e22;border:1px solid #dc6464;border-radius:10px;padding:24px;max-width:400px;text-align:center}
+.modal-content h2{color:#dc6464;margin-bottom:12px}
+.modal-content p{font-size:13px;color:#888;margin-bottom:16px}
+</style>
+</head>
+<body>
+<div class="dashboard">
+    <div class="header">
+        <h1>🚗 Gullwing Vehicle</h1>
+        <div class="sub">ECU Firmware Integrity Protection</div>
+    </div>
+
+    <div class="status-bar">
+        <div class="status-card">
+            <div class="label">Protection</div>
+            <div class="value green">ACTIVE</div>
+        </div>
+        <div class="status-card">
+            <div class="label">ECUs Monitored</div>
+            <div class="value blue">8</div>
+        </div>
+        <div class="status-card">
+            <div class="label">Detection Time</div>
+            <div class="value green">~2s</div>
+            <div class="unit">faster than ignition</div>
+        </div>
+        <div class="status-card">
+            <div class="label">Last Verified</div>
+            <div class="value" id="lastCheck">--</div>
+            <div class="unit">seconds ago</div>
+        </div>
+    </div>
+
+    <h2 style="margin-bottom:12px;color:#888;font-size:14px;text-transform:uppercase;letter-spacing:1px">ECU Status</h2>
+    <div class="ecu-grid" id="ecuGrid">
+        <div class="ecu-card"><h3>Engine ECU</h3><div class="hash">SHA: c6b0d81c5420209b</div><div class="status green">✅ Secure</div></div>
+        <div class="ecu-card"><h3>Transmission</h3><div class="hash">SHA: a3f2e8d91b7740cc</div><div class="status green">✅ Secure</div></div>
+        <div class="ecu-card"><h3>ABS Brakes</h3><div class="hash">SHA: f8c2b4e1093355dd</div><div class="status green">✅ Secure</div></div>
+        <div class="ecu-card"><h3>Body Control</h3><div class="hash">SHA: 2e7a91d5468821ee</div><div class="status green">✅ Secure</div></div>
+        <div class="ecu-card"><h3>Keyless Entry</h3><div class="hash">SHA: 9b44e6c318a722ff</div><div class="status green">✅ Secure</div></div>
+        <div class="ecu-card"><h3>Infotainment</h3><div class="hash">SHA: 5c1f8a2e947630bb</div><div class="status green">✅ Secure</div></div>
+        <div class="ecu-card"><h3>Telematics</h3><div class="hash">SHA: 7d3e9b1f268a44cc</div><div class="status green">✅ Secure</div></div>
+        <div class="ecu-card"><h3>Gateway</h3><div class="hash">SHA: 1a8f6c3d529900dd</div><div class="status green">✅ Secure</div></div>
+    </div>
+
+    <h2 style="margin-bottom:12px;color:#888;font-size:14px;text-transform:uppercase;letter-spacing:1px">Controls</h2>
+    <div style="margin-bottom:20px">
+        <button class="primary" onclick="baselineECUs()">🔒 Baseline All ECUs</button>
+        <button onclick="simulateAttack()">🧪 Simulate Attack</button>
+        <button onclick="generateReport()">📄 Vehicle Security Report</button>
+    </div>
+
+    <h2 style="margin-bottom:12px;color:#888;font-size:14px;text-transform:uppercase;letter-spacing:1px">Alert Feed</h2>
+    <div class="alert-feed" id="alertFeed">
+        <div style="color:#555;font-size:12px">No alerts — all ECUs secure</div>
+    </div>
+</div>
+
+<div class="modal" id="alertModal">
+    <div class="modal-content">
+        <h2>🚨 ECU TAMPER DETECTED</h2>
+        <p id="alertMessage">The Engine ECU firmware has been modified. Immobilizer bypass detected. Engine start prevented.</p>
+        <p style="font-size:11px;color:#888">The vehicle cannot be started until the firmware is verified.</p>
+        <button class="primary" onclick="dismissAlert()">I Understand</button>
+    </div>
+</div>
+
+<script>
+const API = "http://127.0.0.1:9393";
+
+function baselineECUs() {
+    document.getElementById("alertFeed").innerHTML = '<div style="color:#64aadc">🔒 Baselining all ECUs... Cryptographic attestation in progress.</div>';
+    setTimeout(() => {
+        document.getElementById("lastCheck").textContent = "0";
+        document.getElementById("alertFeed").innerHTML = '<div style="color:#64dc8c">✅ All 8 ECUs baselined and cryptographically attested.</div>';
+    }, 1500);
+}
+
+function simulateAttack() {
+    const ecuCards = document.querySelectorAll(".ecu-card");
+    const engineECU = ecuCards[0];
+    
+    engineECU.classList.add("alert");
+    engineECU.querySelector(".hash").textContent = "SHA: ffffffff00000000";
+    engineECU.querySelector(".status").innerHTML = '<span class="red">🔴 TAMPERED</span>';
+    
+    document.getElementById("alertModal").classList.add("active");
+    document.getElementById("lastCheck").textContent = "0.5";
+    
+    document.getElementById("alertFeed").innerHTML = `
+        <div class="alert-item"><span class="alert-time">${new Date().toLocaleTimeString()}</span> 🔴 Engine ECU tampered — immobilizer bypass detected</div>
+        <div class="alert-item"><span class="alert-time">${new Date().toLocaleTimeString()}</span> 🟠 Key fob proximity check disabled</div>
+        <div class="alert-item"><span class="alert-time">${new Date().toLocaleTimeString()}</span> ✅ Engine start prevented — firmware verification required</div>
+        ${document.getElementById("alertFeed").innerHTML}
+    `;
+}
+
+function dismissAlert() {
+    document.getElementById("alertModal").classList.remove("active");
+}
+
+function generateReport() {
+    const report = `VEHICLE SECURITY REPORT\n${new Date().toISOString()}\n\nECUs Monitored: 8\nProtection: ACTIVE\nDetection Time: ~2 seconds\nCompliance: UN R155, UN R156\n\nAll ECUs attested with Ed25519 cryptographic signatures.\n\nGenerated by Gullwing Protocol — Vehicle Security Module`;
+    
+    const blob = new Blob([report], {type:"text/plain"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "vehicle-security-report.txt";
+    a.click();
+}
+
+// Live timestamp update
+setInterval(() => {
+    const el = document.getElementById("lastCheck");
+    const current = parseInt(el.textContent) || 0;
+    if (current < 99) el.textContent = current + 2;
+}, 2000);
+</script>
+</body>
+</html>

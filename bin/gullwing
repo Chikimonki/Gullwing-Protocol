@@ -1,0 +1,85 @@
+#!/usr/bin/env luajit
+--============================================================================
+--  GULLWING v1.0 — Unified Binary Intelligence Platform
+--  Dispatches subcommands to their respective modules via subprocess.
+--============================================================================
+
+local SRC = "/mnt/d/moabi/src"
+
+local COMMANDS = {
+    reflect  = { script = "moabi-reflect.lua",   help = "Run 8-layer convergent analysis on a binary" },
+    watch    = { script = "gullwing-watch.lua",   help = "Monitor a directory for binary changes (auto-delta)" },
+    delta    = { script = "moabi-delta.lua",      help = "Compare two evidence JSON files for supply chain changes" },
+    extract  = { script = "moabi-extract.lua",  help = "Find embedded executables inside files (PDF, ZIP, etc.)" },
+    agent    = { script = "gullwing-agent.lua",  help = "Automated response: quarantine, attest, restore on CRITICAL" },    
+    attest   = { script = "gullwing-attest.lua",  help = "Cryptographic evidence signing and verification" },
+    compare  = { script = "gullwing-compare.lua", help = "Score cross-vendor binary equivalence" },
+    unpack   = { script = "gullwing-unpack.lua", help = "Polymorphic unpacking via QEMU emulation" },
+    vehicle  = { script = "gullwing-vehicle.lua", help = "Vehicle ECU firmware integrity monitor" },
+    unpack_deep = { script = "gullwing-unpack-deep.lua", help = "Deep memory dumping via QEMU (full unpack)" },
+    vehicle  = { script = "gullwing-vehicle.lua", help = "Vehicle ECU firmware integrity monitor" },
+    metamorph = { script = "gullwing-metamorph.lua", help = "Opcode graph similarity for metamorphic detection" },
+    keyrecover = { script = "gullwing-keyrecover.lua", help = "Encrypted capsule key recovery from firmware" },
+    distributed = { script = "gullwing-distributed.lua", help = "Multi-node distributed analysis via Tailscale" },
+    yara     = { script = "gullwing-yara.lua",     help = "YARA rule scanning + phi3 rule generation" },
+    stix     = { script = "gullwing-stix.lua",     help = "STIX 2.1 export for SOC/regulatory compliance" },
+    witness  = { script = "gullwing-witness.lua", help = "Build provenance verification with Witness" },
+    train    = { script = "moabi-ml.lua",         help = "Train or validate the ML model" },
+    sbom     = { script = "moabi-sbom.lua",       help = "Generate CycloneDX 1.6 SBOM from a directory" },
+    pe       = { script = "moabi-pe.lua",         help = "Analyze a Windows PE binary" },
+    qemu     = { script = "moabi-qemu.lua",       help = "Run cross-architecture QEMU emulation" },
+    modelbom = { script = "moabi-model-bom.lua",  help = "Generate cryptographic Model-BOM" },
+    view     = { script = "moabi-view.lua",       help = "Dashboard viewer for CycloneDX JSON" },
+    serve    = { script = "moabi-serve.lua",    help = "Start HTTP API server for browser integration" },
+}
+
+local function shq(s) return "'" .. tostring(s):gsub("'", "'\\''") .. "'" end
+
+local function usage()
+    print("GULLWING v1.0 — Unified Binary Intelligence Platform")
+    print()
+    print("Usage: gullwing COMMAND [args...]")
+    print()
+    print("Commands:")
+    local keys = {}
+    for k in pairs(COMMANDS) do keys[#keys + 1] = k end
+    table.sort(keys)
+    for _, k in ipairs(keys) do
+        print(string.format("  %-12s %s", k, COMMANDS[k].help))
+    end
+    print()
+    print("Examples:")
+    print("  gullwing reflect /usr/bin/ls --json")
+    print("  gullwing watch /usr/bin 5.0")
+    print("  gullwing attest sign reports/ls.evidence.json")
+    print("  gullwing compare a.json b.json")
+    print("  gullwing delta old.json new.json")
+end
+
+local function main()
+    if not arg or not arg[1] or arg[1] == "-h" or arg[1] == "--help" then
+        usage()
+        return 0
+    end
+
+    local cmd = arg[1]
+    local config = COMMANDS[cmd]
+
+    if not config then
+        io.stderr:write("Unknown command: " .. cmd .. "\n\n")
+        usage()
+        return 1
+    end
+
+    -- Build subprocess command
+    local parts = { "luajit", SRC .. "/" .. config.script }
+    if cmd == "train" then parts[#parts + 1] = shq(cmd) end
+    for i = 2, #arg do
+        parts[#parts + 1] = shq(arg[i])
+    end
+
+    local command = table.concat(parts, " ")
+    return os.execute(command)
+end
+
+main()

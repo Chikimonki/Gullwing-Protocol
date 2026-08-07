@@ -1,0 +1,10 @@
+{
+  "tool": "MOABI v1.0",
+  "timestamp": "2026-07-19T11:27:30+01:00",
+  "root": "/mnt/d/moabi/bin",
+  "analyzed": 18,
+  "cyclonedx": "software.cdx.json",
+  "model_bom": "modelbom.json",
+  "evidence_dir": "evidence/",
+  "model_hash": "b7ba2a67a309df1bb5f9260bc51ed54da03c9b61742387972fbe6d2f1d18759b"
+}
