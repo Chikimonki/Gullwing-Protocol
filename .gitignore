@@ -1,2 +1,8 @@
 reports/yara/community/
 reports/yara/community/
+guest/
+reports/training/
+src/bin/
+*.so
+*.exe
+*.iso
