@@ -1,4 +1,4 @@
-# Gullwing Protocol — The Cormorant - WSL2 Ubunutu
+# Gullwing Protocol — The Cormorant
 
 > *"Lua is Portuguese for Moon. Moon is reflection."*
 
@@ -15,12 +15,35 @@ gullwing reflect /usr/bin/ls
 # Monitor a directory for supply chain changes
 gullwing watch /usr/bin 5.0
 
+# Start the real-time fleet bus
+gullwing bus
+
 # Generate a CISA compliance report
 gullwing cisa-report
 
 # Ask the local LLM about a binary
 gullwing ask /tmp/suspicious_binary
 ```
+
+---
+
+## 🌐 Cormorant Bus — Real-Time Fleet Communication
+
+The fleet communicates in real-time via an Elixir/Phoenix PubSub bus:
+
+```bash
+gullwing bus                    # Start the fleet communication layer
+curl localhost:4000/health      # Health check
+curl localhost:4000/fleet       # Fleet status (all nodes)
+```
+
+**Architecture:**
+- **Headscale** (BSD-3) — fully open-source control plane, replaced Tailscale SaaS
+- **Cormorant Bus** (Elixir/Phoenix PubSub) — real-time alert fan-out, WebSocket-ready
+- **Gullwing API** (LuaJIT FFI) — binary analysis engine
+- **Unified Frontend** (HTML/JS) — browser dashboard
+
+Alerts flow from Gullwing → Bus → Dashboard in microseconds. No polling. No delays.
 
 ---
 
@@ -36,7 +59,7 @@ Gullwing maps to **8/8 CISA-recommended no-cost cybersecurity services**:
 | Incident Response | Automated quarantine + STIX 2.1 export |
 | Threat Intelligence Sharing | STIX/TAXII + MISP compatible |
 | Ransomware Readiness | ML model integrity guard |
-| Cloud Security | Tailscale fleet monitoring |
+| Cloud Security | Headscale fleet monitoring |
 | ICS/OT Security | UEFI firmware extraction |
 
 📄 **CISA submission pending — adjudication in progress.**
@@ -62,12 +85,12 @@ Delta: 9 changes, weight 12.0, SUPPLY CHAIN CHANGE — NOTABLE
 - UN R155/R156 vehicle ECU compliance
 
 **Download the proof:** Click `📋 CRA Proof` → `Generate CRA Proof Bundle` in the frontend.
-```
+
+---
 
 ## 🔬 The 8-Layer Convergent Model
 
 ```
-
                      Target Binary
                            │
     ┌──────────────────────┼──────────────────────┐
@@ -99,7 +122,7 @@ No single layer is trusted. The agreement between independent mirrors produces t
 
 - **8-layer convergent analysis** — identity, structure, semantics, entropy, ML, runtime, memory, memory differential
 - **WCC Binary Unlinking** — transform executables into callable shared libraries
-- **Local LLM Analysis** — air-gapped AI security assessment (Qwen2.5 / Hermes3)
+- **Local LLM Analysis** — air-gapped AI security assessment (Phi-4-mini / Qwen2.5)
 - **Continuous Monitoring** — real-time supply chain change detection (~2 seconds)
 - **Automated Quarantine** — instant isolation of tampered binaries
 - **Ed25519 Attestation** — cryptographic evidence for legal/compliance use
@@ -107,6 +130,8 @@ No single layer is trusted. The agreement between independent mirrors produces t
 - **STIX 2.1 Export** — SOC/SIEM integration ready
 - **UEFI Firmware Extraction** — embedded EFI executable carving
 - **YARA Integration** — 10,000+ community rules + LLM rule generation
+- **Cormorant Bus** — real-time fleet communication via Elixir/Phoenix PubSub
+- **Headscale** — fully open-source fleet control plane (BSD-3)
 - **Cross-Platform** — Linux ELF + Windows PE from WSL
 - **Cross-Architecture** — ARM, RISC-V, MIPS via QEMU
 - **Reflexive Security** — the platform watches itself
@@ -128,7 +153,7 @@ Full 8-layer analysis on `/usr/bin/ls` (142KB ELF64): **~25ms**
 | Memory inspection | ~30 ms |
 | Memory differential | ~30 ms |
 
-Static-only analysis: ~25ms. Continuous monitoring detection: ~2 seconds.
+Static-only analysis: ~25ms. Fleet alert fan-out: microseconds.
 
 ---
 
@@ -139,10 +164,11 @@ Static-only analysis: ~25ms. Continuous monitoring detection: ~2 seconds.
 │  🔍 Analyze    WCC + Gullwing + LLM        │
 │  📊 Dashboard  Risk, Integrity, SBOM       │
 │  🤖 MCP        AI Agent Tools              │
-│  📡 Monitor    Live Alert Feed             │
+│  📡 Monitor    Real-Time Alert Feed        │
 │  🧬 Metamorph  Opcode Similarity           │
-│  🌐 Distributed Tailscale Fleet             │
+│  🌐 Distributed Headscale Fleet             │
 │  🏛 CISA       Compliance Report            │
+│  📋 CRA Proof  Dependency Delta Evidence    │
 └─────────────────────────────────────────────┘
 ```
 
@@ -158,12 +184,13 @@ Open `http://127.0.0.1:8080/unified.html` after starting the API server.
 | Orchestration | LuaJIT FFI |
 | ML Classifier | Weighted k-NN (Welford normalization) |
 | Emulation | QEMU user-mode |
-| LLM | Ollama + Llama 3.2 1B / Qwen2.5 7B |
+| LLM | Ollama + Phi-4-mini / Llama 3.2 1B |
 | Attestation | OpenSSL Ed25519 |
 | Frontend | Vanilla HTML/JS + Python HTTP server |
-| Fleet | Tailscale mesh VPN |
+| Fleet Control | Headscale (BSD-3) |
+| Fleet Bus | Cormorant Bus — Elixir/Phoenix PubSub |
 
-**Zero cloud dependencies. Zero API keys. Fully air-gapped capable.**
+**Zero cloud dependencies. Zero API keys. Fully air-gapped capable. Fully open-source stack.**
 
 ---
 
@@ -178,6 +205,9 @@ luajit src/moabi-ml.lua train reports/training reports/system.model
 
 # Start the API server
 gullwing serve
+
+# Start the fleet bus (optional)
+gullwing bus
 
 # Open the frontend
 cd src/extension && python3 -m http.server 8080
@@ -207,12 +237,13 @@ MIT — freely deployable, modifiable, and distributable by any organization.
 
 - **Repository:** github.com/forgottennord-ship-it/GullWing
 - **CISA Listing:** Pending adjudication
+- **ENISA:** CVE Program compatible — STIX 2.1 + CycloneDX 1.6
 - **White Paper:** `docs/GULLWING-WHITEPAPER-v4.5.md`
-- **Demo Video:** [YouTube].(https://youtu.be/bFVrP7GcWYM & https://www.youtube.com/watch?v=RMTq-QCLzs8).
-- WCC - https://github.com/endrazine/wcc
+- **Demo Videos:** [YouTube](https://youtu.be/bFVrP7GcWYM) | [YouTube 2](https://www.youtube.com/watch?v=RMTq-QCLzs8)
+- **WCC:** [github.com/endrazine/wcc](https://github.com/endrazine/wcc)
+
 ---
 
-*The Cormorant dives. The Gullwing watches. The mirrors reflect.*
+*The Cormorant dives. The Gullwing watches. The Kestrel carries.*
 
 *Built with LuaJIT FFI + Zig + ML + Phi-4 Mini. Submitted to CISA. Ready for the world.*
-```
