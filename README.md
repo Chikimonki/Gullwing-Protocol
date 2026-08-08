@@ -19,10 +19,22 @@ gullwing watch /usr/bin 5.0
 # Start the real-time fleet bus
 gullwing bus
 
+# Start the WCC API (PE→ELF transformation + Punk-C shell)
+gullwing wcc-api
+
 # Generate a CISA compliance report
 gullwing cisa-report
 
 ```
+Gullwing API (9393) — 8-layer analysis, LLM, SBOM, attestation
+
+WCC API (9394) — PE→ELF, libify, Punk-C interrogation, deep function scan
+
+Cormorant Bus (4000) — Real-time fleet communication
+
+Headscale — Open-source fleet control plane
+
+Unified Frontend — 7 tabs + arcade
 
 ---
 
