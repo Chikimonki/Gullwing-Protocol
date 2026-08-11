@@ -1,4 +1,4 @@
-# 🦅 Gullwing Protocol — The Cormorant - WSL2 Ubuntu
+# 🦅 Gullwing Protocol — The Cormorant - WSL2 - Ubuntu
 
 > *"Lua is Portuguese for Moon. Moon is reflection."*
 
