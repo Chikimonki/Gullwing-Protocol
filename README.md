@@ -282,7 +282,7 @@ Gullwing stands on the shoulders of these open-source projects:
 | Project | Author | License | Used For |
 |---------|--------|---------|----------|
 | [WCC](https://github.com/endrazine/wcc) | Jonathan Brossard | MIT | Binary unlinking, PE→ELF, Punk-C |
-| [colibrì](https://github.com/JustVugg/colibri) | Vincenzo Fornaro | Apache 2.0 | Kestrel embedded inference engine |
+| [colibrì](https://github.com/JustVugg/colibri) | Vincenzo Fornaro | Apache 2.0 | Kestrel embedded inference engine — with author's blessing |
 | [Headscale](https://github.com/juanfont/headscale) | Juan Font | BSD-3 | Open-source fleet control plane |
 | [Ollama](https://github.com/ollama/ollama) | Ollama Team | MIT | Local LLM runtime |
 | [Phi-4-mini](https://ollama.com/library/phi4-mini) | Microsoft | MIT | Air-gapped AI analysis |
