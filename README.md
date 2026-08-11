@@ -300,5 +300,5 @@ MIT — freely deployable, modifiable, and distributable by any organization.
 
 *The Cormorant dives. The Gullwing watches. The Kestrel carries.*
 
-*Built with LuaJIT FFI + Zig + Elixir + ML + Phi-4 Mini. Submitted to CISA. Ready for the world.*
+*Built with LuaJIT FFI + Zig + Elixir + ML + Phi-4 Mini.  With assistance from AI models of arena.ai, Brave and mostly DSeek. Submitted to CISA. Ready for the world.*
 ```
