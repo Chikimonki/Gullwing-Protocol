@@ -1,3 +1,11 @@
+*.model filter=lfs diff=lfs merge=lfs -text
+*.so filter=lfs diff=lfs merge=lfs -text
+*.o filter=lfs diff=lfs merge=lfs -text
+*.exe filter=lfs diff=lfs merge=lfs -text
+*.iso filter=lfs diff=lfs merge=lfs -text
+*.gguf filter=lfs diff=lfs merge=lfs -text
+reports/training/** filter=lfs diff=lfs merge=lfs -text
+gullwing-kestrel/engine/vendor/** filter=lfs diff=lfs merge=lfs -text
 reports/training/shared_library/*.so filter=lfs diff=lfs merge=lfs -text
 reports/training/pe_executable/*.exe filter=lfs diff=lfs merge=lfs -text
 guest/*.iso filter=lfs diff=lfs merge=lfs -text

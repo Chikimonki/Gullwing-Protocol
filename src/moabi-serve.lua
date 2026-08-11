@@ -1,7 +1,6 @@
 #!/usr/bin/env luajit
 --============================================================================
---  MOABI-SERVE v2.2 -- Gullwing API + MCP + LLM + STIX + YARA + WCC
---============================================================================
+--  MOABI-SERVE v2.2 — Gullwing HTTP API
 --============================================================================
 
 local SRC = "/mnt/d/moabi/src"
@@ -19,6 +18,10 @@ local function shq(s) return "'" .. tostring(s):gsub("'", "'\\''") .. "'" end
 local function file_exists(p) local f=io.open(p,"rb"); if f then f:close() return true end; return false end
 local function url_decode(s) return s:gsub("+", " "):gsub("%%(%x%x)", function(h) return string.char(tonumber(h, 16)) end) end
 
+-- ============================================================================
+--  HANDLERS
+-- ============================================================================
+
 local function nl_summary(evidence)
     local c = evidence.convergence or {}; local ml = evidence.ml or {}; local id = evidence.identity or {}
     local sem = evidence.semantics or {}; local st = evidence.structure or {}
@@ -31,7 +34,6 @@ local function nl_summary(evidence)
         #(c.signals or {}) > 0 and table.concat(c.signals, "; ") or "none")
 end
 
--- HANDLERS
 local function handle_reflect(params)
     local t = params.path or params.target; if not t or t == "" then return 400, json.encode({error="missing path"}) end
     os.execute("luajit " .. shq(REFLECT) .. " " .. shq(t) .. " --static-only --json --model " .. shq(MODEL_PATH) .. " 2>/dev/null")
@@ -52,9 +54,6 @@ local function handle_mcp()
         tools = {
             {name = "gullwing_reflect", description = "8-layer convergent binary analysis", inputSchema = {type = "object", properties = {path = {type = "string"}}, required = {"path"}}},
             {name = "gullwing_status", description = "Platform health check", inputSchema = {type = "object", properties = {}}},
-            {name = "gullwing_wcc", description = "WCC libification", inputSchema = {type = "object", properties = {path = {type = "string"}}, required = {"path"}}},
-            {name = "gullwing_wcc_deep", description = "Deep function scan via WSH", inputSchema = {type = "object", properties = {path = {type = "string"}}, required = {"path"}}},
-            {name = "gullwing_llm", description = "AI analysis via llama32:1b", inputSchema = {type = "object", properties = {path = {type = "string"}, question = {type = "string"}}, required = {"path"}}}
         }
     })
 end
@@ -129,32 +128,19 @@ local function handle_llm(params)
         id.path or "?", id.size or 0, ml.class or "?", ml.confidence or 0, c.risk_tier or "?",
         #libs>0 and table.concat(libs,", ") or "none", #(c.signals or {})>0 and table.concat(c.signals,"; ") or "none", q)
     local tmp = os.tmpname(); local tf = io.open(tmp,"w"); tf:write(prompt); tf:close()
-    local oh = io.popen("ollama run llama32:1b < " .. shq(tmp) .. " 2>/dev/null"); local resp = oh:read("*a"); oh:close(); os.remove(tmp)
+    local oh = io.popen("ollama run phi4-mini < " .. shq(tmp) .. " 2>/dev/null")
+    local resp = oh:read("*a") or "No response from LLM."; oh:close(); os.remove(tmp)
     return 200, json.encode({question=q, target=t, analysis=resp:gsub("^%s+",""):gsub("%s+$",""),
         summary={class=ml.class, confidence=ml.confidence, risk=c.risk_tier, novelty=c.novelty_tier}})
 end
 
--- SERVER
+-- ============================================================================
+--  SERVER
+-- ============================================================================
+
 local function respond(client, code, body)
     client:send(string.format("HTTP/1.1 %d %s\r\nContent-Type: application/json\r\nAccess-Control-Allow-Origin: *\r\nConnection: close\r\nContent-Length: %d\r\n\r\n%s", code, code==200 and "OK" or "Error", #body, body))
     client:close()
-end
-
-local function handle_alerts()
-    local log_path = "/mnt/d/moabi/reports/watch/alerts.log"
-    local alerts = {}
-    local f = io.open(log_path, "r")
-    if f then
-        for line in f:lines() do
-            if line:match("CRITICAL") or line:match("NOTABLE") or line:match("HOSTILE") or line:match("SUSPICIOUS") then
-                alerts[#alerts + 1] = line
-            end
-        end
-        f:close()
-    end
-    -- Return last 20 alerts
-    while #alerts > 20 do table.remove(alerts, 1) end
-    return 200, json.encode({count = #alerts, alerts = alerts})
 end
 
 local function start()
@@ -173,14 +159,6 @@ local function start()
                 local body = clen > 0 and (client:receive(clen) or "") or ""
                 local params = {}; for k,v in body:gmatch("([^&=]+)=([^&]*)") do params[url_decode(k)] = url_decode(v) end
                 local code, resp = 404, json.encode({error="not found"})
-                if path == "/" or path == "/unified" then
-                    local hf = io.open(SRC .. "/extension/unified.html", "r")
-                    if hf then local html = hf:read("*a"); hf:close()
-                        client:send("HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nContent-Length: " .. #html .. "\r\n\r\n" .. html)
-                        client:close()
-                        
-                    end
-                end
                 if path == "/status" then code, resp = handle_status()
                 elseif path == "/mcp" then code, resp = handle_mcp()
                 elseif path == "/health" then code, resp = handle_health()
@@ -190,7 +168,6 @@ local function start()
                 elseif path == "/wcc/deep" and method == "POST" then code, resp = handle_wcc_deep(params)
                 elseif path == "/metamorph/compare" and method == "POST" then code, resp = handle_metamorph(params)
                 elseif path == "/llm" and method == "POST" then code, resp = handle_llm(params)
-                elseif path == "/alerts" then code, resp = handle_alerts()
                 end
                 respond(client, code, resp)
             else client:close() end

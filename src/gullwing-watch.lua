@@ -54,10 +54,20 @@ local function alert(target, d)
     local msg = string.format("[%s] %s — %s\n  Weight: %.1f  |  Changes: %d  |  Critical: %d\n\n",
         ts, target, d.verdict, d.weight, d.changes, d.critical_count or 0)
     log:write(msg) log:close()
+    post_to_bus(target, d.verdict, d.weight, d.changes)
     local RED = "\27[31m" local RESET = "\27[0m"
     io.stderr:write(RED .. msg .. RESET)
     -- Auto-trigger agent
     os.execute("luajit " .. shq(AGENT) .. " respond " .. shq(target) .. " " .. shq(d.verdict) .. " 2>&1 &")
+end
+
+local BUS_URL = "http://127.0.0.1:4000/alert"
+
+local function post_to_bus(target, verdict, weight, changes)
+    local payload = string.format(
+        '{"type":"%s","binary":"%s","weight":%.1f,"changes":%d,"timestamp":"%s","node":"%s"}',
+        verdict, target, weight, changes, os.date("!%Y-%m-%dT%H:%M:%SZ"), "desktop-sh1trj9")
+    os.execute("curl -s -X POST " .. shq(BUS_URL) .. " -H 'Content-Type: application/json' -d '" .. payload .. "' 2>/dev/null &")
 end
 
 local function usage()

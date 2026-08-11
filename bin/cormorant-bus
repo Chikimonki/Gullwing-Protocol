@@ -1,0 +1,6 @@
+cat > /mnt/d/moabi/bin/cormorant-bus << 'EOF'
+#!/bin/bash
+cd /tmp/gullwing-clean/cormorant_bus
+elixir -S mix run --no-halt
+EOF
+chmod +x /mnt/d/moabi/bin/cormorant-bus

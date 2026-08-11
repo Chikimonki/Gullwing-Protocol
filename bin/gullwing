@@ -31,6 +31,9 @@ local COMMANDS = {
     modelbom = { script = "moabi-model-bom.lua",  help = "Generate cryptographic Model-BOM" },
     view     = { script = "moabi-view.lua",       help = "Dashboard viewer for CycloneDX JSON" },
     serve    = { script = "moabi-serve.lua",    help = "Start HTTP API server for browser integration" },
+    bus      = { script = "cormorant-bus",       help = "Start real-time fleet communication bus" },
+    wcc-api  = { script = "moabi-wcc-api.lua",   help = "WCC PE→ELF + WSH interrogation API (port 9394)" },
+    arcade   = { script = "gullwing-arcade.lua", help = "Assembly Golf — learn binary analysis through games" },
 }
 
 local function shq(s) return "'" .. tostring(s):gsub("'", "'\\''") .. "'" end
