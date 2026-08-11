@@ -56,6 +56,8 @@ Gullwing maps to **8/8 CISA-recommended no-cost cybersecurity services**:
 | Ransomware Readiness | ML model integrity guard |
 | Cloud Security | Headscale fleet monitoring |
 | ICS/OT Security | UEFI firmware extraction |
+- **Component Security Advisories**: colibrì publishes [security advisories](https://github.com/JustVugg/colibri/security/advisories) for integrated components, supporting CRA vulnerability-handling requirements.
+- **Reproducible Builds**: Kestrel engine binaries are reproducible from tagged sources, satisfying CRA integrity expectations.
 
 📄 **CISA submission pending — adjudication in progress.**
 
