@@ -284,13 +284,23 @@ Gullwing stands on the shoulders of these open-source projects:
 | Project | Author | License | Used For |
 |---------|--------|---------|----------|
 | [WCC](https://github.com/endrazine/wcc) | Jonathan Brossard | MIT | Binary unlinking, PE→ELF, Punk-C |
-| [colibrì](https://github.com/JustVugg/colibri) | Vincenzo Fornaro | Apache 2.0 | Kestrel embedded inference engine — with author's blessing |
+| [colibrì](https://github.com/JustVugg/colibri) | [Vincenzo Fornaro](https://github.com/JustVugg) | Apache 2.0 | Pure-C MoE inference engine — runs 744B parameter models on 25GB RAM. Kestrel's embedded intelligence core. Author-blessed integration. 
 | [Headscale](https://github.com/juanfont/headscale) | Juan Font | BSD-3 | Open-source fleet control plane |
 | [Ollama](https://github.com/ollama/ollama) | Ollama Team | MIT | Local LLM runtime |
 | [Phi-4-mini](https://ollama.com/library/phi4-mini) | Microsoft | MIT | Air-gapped AI analysis |
 | [QEMU](https://www.qemu.org/) | QEMU Project | GPL 2.0 | Cross-architecture emulation |
 | [LuaJIT](https://luajit.org/) | Mike Pall | MIT | FFI orchestration |
 | [Zig](https://ziglang.org/) | Zig Software Foundation | MIT | Zero-copy core engine |
+
+---
+
+### Special Recognition
+
+**Vincenzo Fornaro (JustVugg)** — Creator of colibrì, the pure-C inference engine that powers Gullwing's Kestrel embedded AI layer. His "from-scratch" philosophy — writing tokenizers, memory management, and backpropagation by hand in C — enables frontier AI models to run on consumer hardware without enterprise GPU clusters. His blessing and guidance on CRA compliance integration have been invaluable.
+
+**Jonathan Brossard (endrazine)** — Creator of the Witchcraft Compiler Collection, the binary manipulation framework that inspired Gullwing's architecture. His Punk-C philosophy and decade of work on executable reflection laid the foundation for convergent binary analysis.
+
+**Juan Font** — Creator of Headscale, the BSD-3 licensed control plane that keeps the Gullwing fleet fully open source and air-gapped.
 
 ---
 
@@ -302,5 +312,6 @@ MIT — freely deployable, modifiable, and distributable by any organization.
 
 *The Cormorant dives. The Gullwing watches. The Kestrel carries.*
 
-*Built with LuaJIT FFI + Zig + Elixir + ML + Phi-4 Mini. With assistance from AI models of arena.ai, Brave and mostly DSeek. Submitted to CISA. Ready for the world.*
+*Built with LuaJIT FFI + Zig + Elixir + ML + Phi-4 Mini.  With assistance from AI models of arena.ai, Brave and mostly DSeek. Submitted to CISA. Ready for the world.*
 ```
+
