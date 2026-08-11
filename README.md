@@ -301,6 +301,7 @@ Gullwing stands on the shoulders of these open-source projects:
 **Jonathan Brossard (endrazine)** — Creator of the Witchcraft Compiler Collection, the binary manipulation framework that inspired Gullwing's architecture. His Punk-C philosophy and decade of work on executable reflection laid the foundation for convergent binary analysis.
 
 **Juan Font** — Creator of Headscale, the BSD-3 licensed control plane that keeps the Gullwing fleet fully open source and air-gapped.
+
 ---
 
 ## 📜 License
