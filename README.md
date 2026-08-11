@@ -8,6 +8,16 @@
 [![CISA Submitted](https://img.shields.io/badge/CISA-submitted-blue)](https://www.cisa.gov/resources-tools/services)
 [![100% Open Source](https://img.shields.io/badge/stack-100%25%20open%20source-brightgreen)](#-100-open-source-stack)
 
+## 🇪🇺 EU Cybersecurity Act (Revised 2026)
+
+The European Commission's January 2026 cybersecurity package strengthens ICT supply chain security across 18 critical sectors. Gullwing directly supports:
+
+- **Mandatory ICT supply chain derisking** — verify third-party binaries without source code access
+- **European Cybersecurity Certification Framework (ECCF)** — generate evidence bundles for certification schemes
+- **ENISA's reinforced role** — STIX 2.1 + CycloneDX exports for Member State coordination
+
+[Read the EC press release →](https://ec.europa.eu/commission/presscorner/detail/en/ip_26_105)
+
 ---
 
 ## ⚡ CRA Deadline: September 11, 2026
@@ -314,4 +324,3 @@ MIT — freely deployable, modifiable, and distributable by any organization.
 
 *Built with LuaJIT FFI + Zig + Elixir + ML + Phi-4 Mini.  With assistance from AI models of arena.ai, Brave and mostly DSeek. Submitted to CISA. Ready for the world.*
 ```
-
