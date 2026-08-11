@@ -1,25 +1,43 @@
-# Gullwing Protocol — The Cormorant - WSL2 Ubunutu
+# 🦅 Gullwing Protocol — The Cormorant - WSL2 - Ubuntu
 
 > *"Lua is Portuguese for Moon. Moon is reflection."*
 
-**Convergent Binary Intelligence Platform** — 8-layer analysis of ELF and PE executables in under 25ms. In-process. Local. Open source.
+**Convergent Binary Intelligence Platform** — 8-layer analysis of ELF and PE executables in under 25ms. In-process. Local. Air-gapped. Open source.
+
+[![MIT License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+[![CISA Submitted](https://img.shields.io/badge/CISA-submitted-blue)](https://www.cisa.gov/resources-tools/services)
+[![100% Open Source](https://img.shields.io/badge/stack-100%25%20open%20source-brightgreen)](#-100-open-source-stack)
 
 ---
 
-## ⚡ Quick Start
+## ⚡ CRA Deadline: September 11, 2026
+
+The EU Cyber Resilience Act mandates **24-hour exploit reporting**. Gullwing detects supply chain changes in **2 seconds** and generates audit-ready evidence bundles automatically.
+
+> *"Gullwing does not need access to original source code to verify an executable's compliance status."*
+
+[See CRA Compliance Proof →](#-cra-compliance-proof)
+
+---
+
+## 🚀 Quick Start
 
 ```bash
-# Analyze any binary
+# Analyze any binary (25ms static)
 gullwing reflect /usr/bin/ls
 
-# Monitor a directory for supply chain changes
+# Monitor for supply chain changes (2s detection)
 gullwing watch /usr/bin 5.0
 
-# Generate a CISA compliance report
-gullwing cisa-report
+# Start the real-time fleet bus
+gullwing bus
 
-# Ask the local LLM about a binary
-gullwing ask /tmp/suspicious_binary
+# Start the WCC transformation API (PE→ELF + Punk-C)
+luajit src/moabi-wcc-api.lua &
+
+# Open the unified frontend
+cd src/extension && python3 -m http.server 8080
+# Then visit: http://127.0.0.1:8080/unified.html
 ```
 
 ---
@@ -36,7 +54,7 @@ Gullwing maps to **8/8 CISA-recommended no-cost cybersecurity services**:
 | Incident Response | Automated quarantine + STIX 2.1 export |
 | Threat Intelligence Sharing | STIX/TAXII + MISP compatible |
 | Ransomware Readiness | ML model integrity guard |
-| Cloud Security | Tailscale fleet monitoring |
+| Cloud Security | Headscale fleet monitoring |
 | ICS/OT Security | UEFI firmware extraction |
 
 📄 **CISA submission pending — adjudication in progress.**
@@ -61,13 +79,31 @@ Delta: 9 changes, weight 12.0, SUPPLY CHAIN CHANGE — NOTABLE
 - CISA 8/8 service mapping
 - UN R155/R156 vehicle ECU compliance
 
-**Download the proof:** Click `📋 CRA Proof` → `Generate CRA Proof Bundle` in the frontend.
+---
+
+## 🌐 Cormorant Bus — Real-Time Fleet Communication
+
+The fleet communicates in real-time via an Elixir/Phoenix PubSub bus:
+
+```bash
+gullwing bus                    # Start the fleet communication layer
+curl localhost:4000/health      # Health check
+curl localhost:4000/fleet       # Fleet status (all nodes)
 ```
+
+**Architecture:**
+- **Headscale** (BSD-3) — fully open-source control plane
+- **Cormorant Bus** (Elixir/Phoenix PubSub) — real-time alert fan-out
+- **Gullwing API** (LuaJIT FFI) — binary analysis engine
+- **Unified Frontend** (HTML/JS) — browser dashboard
+
+Alerts flow from Gullwing → Bus → Dashboard in microseconds. No polling. No delays.
+
+---
 
 ## 🔬 The 8-Layer Convergent Model
 
 ```
-
                      Target Binary
                            │
     ┌──────────────────────┼──────────────────────┐
@@ -91,7 +127,7 @@ Delta: 9 changes, weight 12.0, SUPPLY CHAIN CHANGE — NOTABLE
  (Risk & Novelty Verdict)
 ```
 
-No single layer is trusted. The agreement between independent mirrors produces truth.
+**No single layer is trusted.** The agreement between independent mirrors produces truth.
 
 ---
 
@@ -99,14 +135,19 @@ No single layer is trusted. The agreement between independent mirrors produces t
 
 - **8-layer convergent analysis** — identity, structure, semantics, entropy, ML, runtime, memory, memory differential
 - **WCC Binary Unlinking** — transform executables into callable shared libraries
-- **Local LLM Analysis** — air-gapped AI security assessment (Qwen2.5 / Hermes3)
+- **Local LLM Analysis** — air-gapped AI security assessment (Phi-4-mini)
 - **Continuous Monitoring** — real-time supply chain change detection (~2 seconds)
 - **Automated Quarantine** — instant isolation of tampered binaries
 - **Ed25519 Attestation** — cryptographic evidence for legal/compliance use
-- **CycloneDX SBOM** — software bill of materials generation
+- **CycloneDX SBOM** — CRA-compliant software bill of materials
 - **STIX 2.1 Export** — SOC/SIEM integration ready
 - **UEFI Firmware Extraction** — embedded EFI executable carving
+- **Vehicle ECU Protection** — UN R155/R156 ready
 - **YARA Integration** — 10,000+ community rules + LLM rule generation
+- **Cormorant Bus** — real-time fleet communication via Elixir/Phoenix PubSub
+- **Headscale** — fully open-source fleet control plane (BSD-3)
+- **Kestrel Engine** — embedded LLM inference via Zig FFI (Tier 0/1)
+- **Assembly Golf** — learn binary analysis through play (arcade)
 - **Cross-Platform** — Linux ELF + Windows PE from WSL
 - **Cross-Architecture** — ARM, RISC-V, MIPS via QEMU
 - **Reflexive Security** — the platform watches itself
@@ -128,7 +169,7 @@ Full 8-layer analysis on `/usr/bin/ls` (142KB ELF64): **~25ms**
 | Memory inspection | ~30 ms |
 | Memory differential | ~30 ms |
 
-Static-only analysis: ~25ms. Continuous monitoring detection: ~2 seconds.
+Static-only analysis: ~25ms. Fleet alert fan-out: microseconds.
 
 ---
 
@@ -139,31 +180,36 @@ Static-only analysis: ~25ms. Continuous monitoring detection: ~2 seconds.
 │  🔍 Analyze    WCC + Gullwing + LLM        │
 │  📊 Dashboard  Risk, Integrity, SBOM       │
 │  🤖 MCP        AI Agent Tools              │
-│  📡 Monitor    Live Alert Feed             │
+│  📡 Monitor    Real-Time Alert Feed        │
 │  🧬 Metamorph  Opcode Similarity           │
-│  🌐 Distributed Tailscale Fleet             │
+│  🌐 Distributed Headscale Fleet             │
 │  🏛 CISA       Compliance Report            │
+│  📋 CRA Proof  Dependency Delta Evidence    │
+│  🎮 Arcade      Assembly Golf               │
 └─────────────────────────────────────────────┘
 ```
 
-Open `http://127.0.0.1:8080/unified.html` after starting the API server.
+Open `http://127.0.0.1:8081/unified.html` after starting the API server.
 
 ---
 
 ## 🔧 Tech Stack
 
-| Component | Technology |
-|-----------|-----------|
-| Core Engine | Zig 0.13.0 → `libmoabi.so` |
-| Orchestration | LuaJIT FFI |
-| ML Classifier | Weighted k-NN (Welford normalization) |
-| Emulation | QEMU user-mode |
-| LLM | Ollama + Llama 3.2 1B / Qwen2.5 7B |
-| Attestation | OpenSSL Ed25519 |
-| Frontend | Vanilla HTML/JS + Python HTTP server |
-| Fleet | Tailscale mesh VPN |
+| Component | Technology | License |
+|-----------|-----------|---------|
+| Core Engine | Zig 0.13.0 → `libmoabi.so` | MIT |
+| Orchestration | LuaJIT FFI | MIT |
+| ML Classifier | Weighted k-NN (Welford normalization) | — |
+| Emulation | QEMU user-mode | GPL 2.0 |
+| LLM | Ollama + Phi-4-mini | MIT |
+| Attestation | OpenSSL Ed25519 | Apache 2.0 |
+| Frontend | Vanilla HTML/JS | — |
+| Fleet Control | Headscale | BSD-3 |
+| Fleet Bus | Elixir/Phoenix PubSub | Apache 2.0 |
+| Binary Manipulation | WCC (Witchcraft Compiler Collection) | MIT |
+| Embedded Engine | colibrì (Kestrel Tier 0/1) | Apache 2.0 |
 
-**Zero cloud dependencies. Zero API keys. Fully air-gapped capable.**
+**Zero cloud dependencies. Zero API keys. Fully air-gapped capable. 100% open-source stack.**
 
 ---
 
@@ -177,11 +223,25 @@ cd GullWing
 luajit src/moabi-ml.lua train reports/training reports/system.model
 
 # Start the API server
-gullwing serve
+luajit src/moabi-serve.lua &
+
+# Start the fleet bus (optional)
+gullwing bus
 
 # Open the frontend
-cd src/extension && python3 -m http.server 8080
+cd src/extension && python3 -m http.server 8081
 ```
+
+---
+
+## 🏆 Recognition & Submissions
+
+| Organization | Status |
+|-------------|--------|
+| 🇺🇸 CISA | No-Cost Cybersecurity Services — pending adjudication |
+| 🇪🇺 ENISA | CVE Program compatible — STIX 2.1 + CycloneDX 1.6 |
+| 🇨🇳 Alibaba | AI Innovation Competition — submitted |
+| 🏛 Cyber On Board | Conference demo — supply chain attack detection |
 
 ---
 
@@ -189,11 +249,46 @@ cd src/extension && python3 -m http.server 8080
 
 | Framework | Coverage |
 |-----------|----------|
-| EU Cyber Resilience Act | SBOM + attestation + continuous monitoring |
+| EU Cyber Resilience Act (CRA) | SBOM + attestation + continuous monitoring + 24h reporting |
 | NIS2 Directive | Incident response + supply chain security |
 | NIST SP 800-53 | System integrity + configuration management |
 | CISA CPG | 8/8 cybersecurity performance goals |
 | AI Act (EU) | Model-BOM + explainable confidence scores |
+| UN R155/R156 | Vehicle ECU firmware verification |
+
+---
+
+## 🔓 100% Open-Source Stack
+
+Every component is OSI-approved open source. No proprietary dependencies. Fully air-gapped capable.
+
+---
+
+## 🌐 Links
+
+- **Repository:** github.com/Chikimonki/Gullwing-Protocol
+- **CISA Listing:** Pending adjudication
+- **ENISA:** CVE Program compatible — STIX 2.1 + CycloneDX 1.6
+- **White Paper:** `docs/GULLWING-WHITEPAPER-v4.5.md`
+- **Demo Videos:** [YouTube](https://youtu.be/bFVrP7GcWYM)
+- **Arcade:** Assembly Golf — learn binary analysis through play
+
+---
+
+## 🙏 Acknowledgments
+
+Gullwing stands on the shoulders of these open-source projects:
+
+| Project | Author | License | Used For |
+|---------|--------|---------|----------|
+| [WCC](https://github.com/endrazine/wcc) | Jonathan Brossard | MIT | Binary unlinking, PE→ELF, Punk-C |
+| [colibrì](https://github.com/JustVugg/colibri) | Vincenzo Fornaro | Apache 2.0 | Kestrel embedded inference engine |
+| [Headscale](https://github.com/juanfont/headscale) | Juan Font | BSD-3 | Open-source fleet control plane |
+| [Ollama](https://github.com/ollama/ollama) | Ollama Team | MIT | Local LLM runtime |
+| [Phi-4-mini](https://ollama.com/library/phi4-mini) | Microsoft | MIT | Air-gapped AI analysis |
+| [QEMU](https://www.qemu.org/) | QEMU Project | GPL 2.0 | Cross-architecture emulation |
+| [LuaJIT](https://luajit.org/) | Mike Pall | MIT | FFI orchestration |
+| [Zig](https://ziglang.org/) | Zig Software Foundation | MIT | Zero-copy core engine |
 
 ---
 
@@ -203,16 +298,7 @@ MIT — freely deployable, modifiable, and distributable by any organization.
 
 ---
 
-## 🌐 Links
+*The Cormorant dives. The Gullwing watches. The Kestrel carries.*
 
-- **Repository:** github.com/forgottennord-ship-it/GullWing
-- **CISA Listing:** Pending adjudication
-- **White Paper:** `docs/GULLWING-WHITEPAPER-v4.5.md`
-- **Demo Video:** [YouTube].(https://youtu.be/bFVrP7GcWYM & https://www.youtube.com/watch?v=RMTq-QCLzs8).
-- WCC - https://github.com/endrazine/wcc
----
-
-*The Cormorant dives. The Gullwing watches. The mirrors reflect.*
-
-*Built with LuaJIT FFI + Zig + ML + Phi-4 Mini. Submitted to CISA. Ready for the world.*
+*Built with LuaJIT FFI + Zig + Elixir + ML + Phi-4 Mini. Submitted to CISA. Ready for the world.*
 ```
