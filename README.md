@@ -8,6 +8,16 @@
 [![CISA Submitted](https://img.shields.io/badge/CISA-submitted-blue)](https://www.cisa.gov/resources-tools/services)
 [![100% Open Source](https://img.shields.io/badge/stack-100%25%20open%20source-brightgreen)](#-100-open-source-stack)
 
+## 🇪🇺 EU Cybersecurity Act (Revised 2026)
+
+The European Commission's January 2026 cybersecurity package strengthens ICT supply chain security across 18 critical sectors. Gullwing directly supports:
+
+- **Mandatory ICT supply chain derisking** — verify third-party binaries without source code access
+- **European Cybersecurity Certification Framework (ECCF)** — generate evidence bundles for certification schemes
+- **ENISA's reinforced role** — STIX 2.1 + CycloneDX exports for Member State coordination
+
+[Read the EC press release →](https://ec.europa.eu/commission/presscorner/detail/en/ip_26_105)
+
 ---
 
 ## ⚡ CRA Deadline: September 11, 2026
@@ -56,6 +66,8 @@ Gullwing maps to **8/8 CISA-recommended no-cost cybersecurity services**:
 | Ransomware Readiness | ML model integrity guard |
 | Cloud Security | Headscale fleet monitoring |
 | ICS/OT Security | UEFI firmware extraction |
+- **Component Security Advisories**: colibrì publishes [security advisories](https://github.com/JustVugg/colibri/security/advisories) for integrated components, supporting CRA vulnerability-handling requirements.
+- **Reproducible Builds**: Kestrel engine binaries are reproducible from tagged sources, satisfying CRA integrity expectations.
 
 📄 **CISA submission pending — adjudication in progress.**
 
@@ -282,13 +294,23 @@ Gullwing stands on the shoulders of these open-source projects:
 | Project | Author | License | Used For |
 |---------|--------|---------|----------|
 | [WCC](https://github.com/endrazine/wcc) | Jonathan Brossard | MIT | Binary unlinking, PE→ELF, Punk-C |
-| [colibrì](https://github.com/JustVugg/colibri) | Vincenzo Fornaro | Apache 2.0 | Kestrel embedded inference engine |
+| [colibrì](https://github.com/JustVugg/colibri) | [Vincenzo Fornaro](https://github.com/JustVugg) | Apache 2.0 | Pure-C MoE inference engine — runs 744B parameter models on 25GB RAM. Kestrel's embedded intelligence core. Author-blessed integration. 
 | [Headscale](https://github.com/juanfont/headscale) | Juan Font | BSD-3 | Open-source fleet control plane |
 | [Ollama](https://github.com/ollama/ollama) | Ollama Team | MIT | Local LLM runtime |
 | [Phi-4-mini](https://ollama.com/library/phi4-mini) | Microsoft | MIT | Air-gapped AI analysis |
 | [QEMU](https://www.qemu.org/) | QEMU Project | GPL 2.0 | Cross-architecture emulation |
 | [LuaJIT](https://luajit.org/) | Mike Pall | MIT | FFI orchestration |
 | [Zig](https://ziglang.org/) | Zig Software Foundation | MIT | Zero-copy core engine |
+
+---
+
+### Special Recognition
+
+**Vincenzo Fornaro (JustVugg)** — Creator of colibrì, the pure-C inference engine that powers Gullwing's Kestrel embedded AI layer. His "from-scratch" philosophy — writing tokenizers, memory management, and backpropagation by hand in C — enables frontier AI models to run on consumer hardware without enterprise GPU clusters. His blessing and guidance on CRA compliance integration have been invaluable.
+
+**Jonathan Brossard (endrazine)** — Creator of the Witchcraft Compiler Collection, the binary manipulation framework that inspired Gullwing's architecture. His Punk-C philosophy and decade of work on executable reflection laid the foundation for convergent binary analysis.
+
+**Juan Font** — Creator of Headscale, the BSD-3 licensed control plane that keeps the Gullwing fleet fully open source and air-gapped.
 
 ---
 
@@ -300,5 +322,5 @@ MIT — freely deployable, modifiable, and distributable by any organization.
 
 *The Cormorant dives. The Gullwing watches. The Kestrel carries.*
 
-*Built with LuaJIT FFI + Zig + Elixir + ML + Phi-4 Mini. Submitted to CISA. Ready for the world.*
+*Built with LuaJIT FFI + Zig + Elixir + ML + Phi-4 Mini.  With assistance from AI models of arena.ai, Brave and mostly DSeek. Submitted to CISA. Ready for the world.*
 ```
