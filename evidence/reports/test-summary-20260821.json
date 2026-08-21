@@ -1,0 +1,45 @@
+{
+  "version": "1.0",
+  "generated": "2026-08-21T16:30:49Z",
+  "tool": "gullwing-protocol-test-runner v1.0",
+  "environment": {
+    "luajit": "2.1.1783585446",
+    "platform": "Linux",
+    "hostname": "DESKTOP-SH1TRJ9"
+  },
+  "tests": [
+    {
+      "name": "LuaJIT Available",
+      "status": "PASS",
+      "description": "LuaJIT interpreter is available"
+    },
+    {
+      "name": "Analysis Scripts",
+      "status": "PASS",
+      "description": "Core analysis scripts are present"
+    },
+    {
+      "name": "System Check",
+      "status": "PASS",
+      "description": "System check script runs successfully"
+    }
+  ],
+  "capabilities": [
+    "8-layer binary analysis",
+    "Ed25519 attestation",
+    "SBOM generation",
+    "STIX 2.1 export",
+    "Continuous monitoring",
+    "Supply chain detection"
+  ],
+  "analysis_layers": [
+    "Identity (Path, Size, SHA256)",
+    "Structure (ELF Class, Sections)",
+    "Semantics (Libraries, Symbols)",
+    "Entropy (Global/Windowed)",
+    "Machine Learning (Weighted k-NN)",
+    "Runtime (Syscall Profile)",
+    "Memory (Page Mappings)",
+    "Memory Differential (Disk vs Memory)"
+  ]
+}

@@ -32,6 +32,38 @@ The EU Cyber Resilience Act mandates **24-hour exploit reporting**. Gullwing det
 
 ---
 
+## 🧪 Testing & Evidence
+
+### Running Tests
+
+```bash
+# Run all tests and generate evidence
+bash tests/run-tests.sh
+
+# View evidence
+cat evidence/reports/test-summary-*.json
+cat evidence/results/system-check-*.txt
+```
+
+### Evidence Structure
+
+```
+evidence/
+├── reports/
+│   └── test-summary-YYYYMMDD.json      # Test results summary
+└── results/
+    └── system-check-YYYYMMDD.txt       # System check output
+```
+
+### What's Tested
+
+- LuaJIT availability
+- Core analysis scripts
+- System check execution
+- 8-layer analysis capabilities
+
+---
+
 ## 🚀 Quick Start
 
 ```bash

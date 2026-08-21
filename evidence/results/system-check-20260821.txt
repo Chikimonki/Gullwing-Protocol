@@ -1,0 +1,17 @@
+luajit: /mnt/d/gullwing/src/check_system.lua:7: module '/mnt/d/moabi/src/moabi' not found:
+	no field package.preload['/mnt/d/moabi/src/moabi']
+	no file '/mnt/d/moabi/src//mnt/d/moabi/src/moabi.lua'
+	no file './/mnt/d/moabi/src/moabi.lua'
+	no file '/mnt/d/moabi/tools/luajit/share/luajit-2.1//mnt/d/moabi/src/moabi.lua'
+	no file '/usr/local/share/lua/5.1//mnt/d/moabi/src/moabi.lua'
+	no file '/usr/local/share/lua/5.1//mnt/d/moabi/src/moabi/init.lua'
+	no file '/mnt/d/moabi/tools/luajit/share/lua/5.1//mnt/d/moabi/src/moabi.lua'
+	no file '/mnt/d/moabi/tools/luajit/share/lua/5.1//mnt/d/moabi/src/moabi/init.lua'
+	no file './/mnt/d/moabi/src/moabi.so'
+	no file '/usr/local/lib/lua/5.1//mnt/d/moabi/src/moabi.so'
+	no file '/mnt/d/moabi/tools/luajit/lib/lua/5.1//mnt/d/moabi/src/moabi.so'
+	no file '/usr/local/lib/lua/5.1/loadall.so'
+stack traceback:
+	[C]: in function 'require'
+	/mnt/d/gullwing/src/check_system.lua:7: in main chunk
+	[C]: at 0x61b29a97c380
