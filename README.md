@@ -1,4 +1,4 @@
-# 🦅 Gullwing Protocol — The Cormorant - WSL2 - Ubuntu
+# Gullwing Protocol — The Cormorant
 
 > *"Lua is Portuguese for Moon. Moon is reflection."*
 
@@ -7,6 +7,8 @@
 [![MIT License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![CISA Submitted](https://img.shields.io/badge/CISA-submitted-blue)](https://www.cisa.gov/resources-tools/services)
 [![100% Open Source](https://img.shields.io/badge/stack-100%25%20open%20source-brightgreen)](#-100-open-source-stack)
+
+**Cross-Platform:** Works on WSL, Linux, macOS, and Windows (Git Bash / PowerShell with Git).
 
 ## 🇪🇺 EU Cybersecurity Act (Revised 2026)
 
