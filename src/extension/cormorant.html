@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Cormorant — Command Center</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:system-ui,sans-serif;background:#060610;color:#c8c8d4;padding:20px}
+.header{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid #1a1a3a}
+.header h1{font-size:24px;background:linear-gradient(135deg,#64dc8c,#64aadc);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.header .badge{font-size:10px;background:#1a1a3a;padding:4px 8px;border-radius:4px;color:#888}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.card{background:#0e0e22;border:1px solid #1a1a3a;border-radius:10px;padding:16px}
+.card h2{font-size:13px;text-transform:uppercase;letter-spacing:1px;color:#666;margin-bottom:10px}
+.row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #111;font-size:13px}
+.row:last-child{border:0}
+.label{color:#777}
+.value{font-weight:600}
+.green{color:#64dc8c}
+.blue{color:#64aadc}
+.yellow{color:#dcaa64}
+.red{color:#dc6464}
+button{padding:8px 16px;border:1px solid #333;border-radius:6px;background:#1a1a3a;color:#c8c8d4;cursor:pointer;font-size:12px;margin:4px}
+button:hover{background:#222}
+button.primary{background:#64dc8c;color:#060610;border-color:#64dc8c}
+input{padding:8px;border:1px solid #333;border-radius:4px;background:#0a0a1a;color:#c8c8d4;width:100%;margin:8px 0}
+.code{background:#0a0a1a;padding:10px;border-radius:4px;font-family:monospace;font-size:11px;max-height:200px;overflow-y:auto;white-space:pre-wrap}
+.functions{max-height:300px;overflow-y:auto}
+.func-item{padding:4px 0;border-bottom:1px solid #111;font-family:monospace;font-size:12px}
+.func-item:before{content:"→ ";color:#64dc8c}
+</style>
+</head>
+<body>
+<div class="header">
+    <h1>The Cormorant</h1>
+    <span class="badge">WCC + Gullwing</span>
+    <span class="badge" id="apiStatus" style="margin-left:auto">● API</span>
+</div>
+
+<div class="grid">
+    <!-- WCC Panel -->
+    <div class="card" style="grid-column:span 2">
+        <h2>⚡ WCC — Binary Unlinking</h2>
+        <input type="text" id="wccPath" placeholder="Path to binary (e.g., /usr/bin/ls)" value="/usr/bin/ls">
+        <button class="primary" onclick="runWCC()">Libify & Analyze</button>
+        <button onclick="runWCCHeaders()">Generate Headers</button>
+        <button onclick="runWCCFlags()">Extract Build Flags</button>
+        <div id="wccResult" style="margin-top:12px"></div>
+    </div>
+
+    <!-- Functions Panel -->
+    <div class="card">
+        <h2>📦 Exported Functions</h2>
+        <div class="functions" id="funcList">
+            <span style="color:#555">Run WCC to see functions</span>
+        </div>
+    </div>
+
+    <!-- Build Flags -->
+    <div class="card">
+        <h2>🔧 Build Flags</h2>
+        <div class="code" id="buildFlags">—</div>
+    </div>
+
+    <!-- Analysis Verdict -->
+    <div class="card">
+        <h2>🎯 Gullwing Verdict</h2>
+        <div id="verdictCard">
+            <span style="color:#555">Awaiting analysis</span>
+        </div>
+    </div>
+
+    <!-- Live Feed -->
+    <div class="card" style="grid-column:span 2">
+        <h2>📡 Live Monitor</h2>
+        <div id="liveFeed" style="max-height:200px;overflow-y:auto;font-size:12px">
+            <span style="color:#555">Start gullwing watch to see alerts</span>
+        </div>
+    </div>
+</div>
+
+<script>
+const API = "http://127.0.0.1:9393";
+
+async function runWCC() {
+    const path = document.getElementById("wccPath").value;
+    document.getElementById("wccResult").innerHTML = "Running WCC...";
+    
+    try {
+        const res = await fetch(`${API}/wcc`, {
+            method: "POST",
+            headers: {"Content-Type":"application/x-www-form-urlencoded"},
+            body: "path=" + encodeURIComponent(path)
+        });
+        const d = await res.json();
+        
+        // Functions
+        document.getElementById("funcList").innerHTML = d.function_list.map(f => 
+            `<div class="func-item">${f}</div>`
+        ).join("") || "No functions exported";
+        
+        // Build flags
+        document.getElementById("buildFlags").textContent = d.build_flags || "—";
+        
+        // WCC result
+        document.getElementById("wccResult").innerHTML = `
+            <div class="row"><span class="label">Libified</span><span class="value green">${d.libified}</span></div>
+            <div class="row"><span class="label">Functions</span><span class="value blue">${d.exported_functions}</span></div>
+            <div class="row"><span class="label">Header</span><span class="value">${d.header_file}</span></div>
+            <div class="row"><span class="label">Punk-C</span><span class="value green">wsh ${d.libified}</span></div>
+            <div class="row"><span class="label">Note</span><span class="value">${d.note}</span></div>
+        `;
+        
+        // Also fetch Gullwing analysis
+        const reflectRes = await fetch(`${API}/reflect`, {
+            method: "POST",
+            headers: {"Content-Type":"application/x-www-form-urlencoded"},
+            body: "path=" + encodeURIComponent(path)
+        });
+        const reflectData = await reflectRes.json();
+        const e = reflectData.evidence || reflectData;
+        const c = e.convergence || {};
+        const ml = e.ml || {};
+        
+        document.getElementById("verdictCard").innerHTML = `
+            <div class="row"><span class="label">Class</span><span class="value blue">${ml.class || '?'}</span></div>
+            <div class="row"><span class="label">Confidence</span><span class="value">${(ml.confidence||0).toFixed(1)}%</span></div>
+            <div class="row"><span class="label">Risk</span><span class="value ${(c.risk_tier||'CLEAR').toLowerCase()}">${c.risk_tier||'?'}</span></div>
+            <div class="row"><span class="label">Novelty</span><span class="value">${c.novelty_tier||'?'}</span></div>
+            <div class="row"><span class="label">Signals</span><span class="value">${(c.signals||[]).length||0}</span></div>
+        `;
+        
+    } catch(err) {
+        document.getElementById("wccResult").innerHTML = `<span class="red">Error: ${err.message}</span>`;
+    }
+}
+
+async function runWCCHeaders() {
+    const path = document.getElementById("wccPath").value;
+    document.getElementById("wccResult").innerHTML = "Generating headers...";
+    const res = await fetch(`${API}/wcc`, {method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:"path="+encodeURIComponent(path)});
+    const d = await res.json();
+    document.getElementById("wccResult").innerHTML = `<div class="code">${d.header_preview||'No headers generated'}</div>`;
+}
+
+async function runWCCFlags() {
+    const path = document.getElementById("wccPath").value;
+    document.getElementById("wccResult").innerHTML = "Extracting flags...";
+    const res = await fetch(`${API}/wcc`, {method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:"path="+encodeURIComponent(path)});
+    const d = await res.json();
+    document.getElementById("buildFlags").textContent = d.build_flags||'—';
+    document.getElementById("wccResult").innerHTML = `<span class="green">Flags extracted: ${d.build_flags}</span>`;
+}
+
+// Live status
+async function checkStatus() {
+    try {
+        const r = await fetch(`${API}/status`);
+        if (r.ok) {
+            document.getElementById("apiStatus").innerHTML = "🟢 API";
+        } else { throw new Error(); }
+    } catch {
+        document.getElementById("apiStatus").innerHTML = "🔴 API";
+    }
+}
+checkStatus();
+setInterval(checkStatus, 5000);
+</script>
+</body>
+</html>

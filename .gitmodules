@@ -1,0 +1,3 @@
+[submodule "wsolver"]
+	path = wsolver
+	url = https://github.com/endrazine/wsolver.git

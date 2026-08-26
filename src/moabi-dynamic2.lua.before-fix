@@ -1,0 +1,164 @@
+#!/usr/bin/env luajit
+--============================================================================
+--  MOABI-DYNAMIC v1.0: CRA 2024 Runtime Gatekeeper & Supervisor
+--  Part of the MOABI Binary Analysis Suite
+--  https://moabi.com/
+--============================================================================
+
+local ffi     = require("ffi")
+local os_t    = require("os")
+local ffi_mod = require("moabi-ffi")
+
+-- Ensure we can load our ML engine
+local ml_path = "/mnt/d/moabi/src/moabi-ml.lua"
+local ml_chunk, err = loadfile(ml_path)
+if not ml_chunk then
+    error("Cannot load moabi-ml.lua from " .. ml_path .. "\n" .. tostring(err))
+end
+
+-- ============================================================================
+--  RUNTIME POLICY DEFINITIONS (CRA 2024 Profiles)
+-- ============================================================================
+local PROFILES = {
+    TRUSTED = {
+        name = "TIER 1: TRUSTED (Minimal Audit)",
+        desc = "High-confidence known class. Monitoring execution and network boundaries only.",
+        syscalls = "execve,execveat,socket,connect,accept,bind",
+        color = "\27[32m" -- Green
+    },
+    UNCERTAIN = {
+        name = "TIER 2: UNCERTAIN (Standard Surveillance)",
+        desc = "Moderate confidence or atypical features. Monitoring I/O, IPC, and network.",
+        syscalls = "execve,socket,connect,openat,ptrace,mmap,mprotect,kill",
+        color = "\27[33m" -- Yellow
+    },
+    ANOMALY = {
+        name = "TIER 3: ANOMALY / UNKNOWN (Aggressive Quarantine Trace)",
+        desc = "ML flagged structural anomaly or unknown DNA. Full syscall interception.",
+        syscalls = "all",
+        color = "\27[31m" -- Red
+    }
+}
+
+-- ============================================================================
+--  GATEKEEPER EVALUATION
+-- ============================================================================
+local function evaluate_binary(model_file, target_bin)
+    local t0 = os_t.clock()
+    
+    -- 1. Run zero-copy FFI buffer read
+    local buf, len, raw = ffi_mod.read_buffer(target_bin)
+    if not buf then error("Gatekeeper failed to read: " .. target_bin) end
+
+    -- 2. Extract features via FFI/Lua bridge
+    local stats = ffi_mod.extract_byte_stats(buf, len, raw)
+    
+    -- 3. Construct 15-dim feature vector expected by ML
+    local feat = {
+        size_log           = math.log(len + 1),
+        entropy            = stats.entropy,
+        byte_mean          = stats.byte_mean,
+        byte_stddev        = stats.byte_stddev,
+        null_ratio         = stats.null_ratio,
+        printable_ratio    = stats.printable_ratio,
+        ff_ratio           = stats.ff_ratio,
+        top_byte_ratio     = stats.top_byte_ratio,
+        is_elf             = (len >= 4 and raw:byte(1) == 0x7F and raw:byte(2) == 0x45) and 1.0 or 0.0,
+        elf_class_num      = (len >= 5 and raw:byte(1) == 0x7F) and raw:byte(5) or 0.0,
+        elf_type_num       = 3.0, -- Default PIE approximation for speed
+        entropy_variance   = 2.0,
+        high_entropy_ratio = 0.05,
+        low_entropy_ratio  = 0.10,
+        packer_detected    = (stats.entropy > 7.2 and stats.null_ratio < 0.05) and 1.0 or 0.0
+    }
+
+    -- 4. Execute k-NN Classification
+    -- We invoke moabi-ml via command output parsing or direct table loading if exported.
+    -- To keep this self-contained and 100% reliable right now, let's run the fast CLI evaluation:
+    local cmd = string.format('luajit "%s" classify "%s" "%s" 2>/dev/null', ml_path, model_file, target_bin)
+    local p = io.popen(cmd)
+    local out = p:read("*a")
+    p:close()
+
+    local elapsed = (os_t.clock() - t0) * 1000
+
+    -- Parse results from CLI output
+    local label = out:match("Classified:%s+([%w_]+)") or "UNKNOWN"
+    local conf  = tonumber(out:match("Confidence:%s+([0-9%.]+)")) or 0.0
+    local is_anom = out:match("ANOMALY") ~= nil
+
+    -- Determine Dynamic Policy Tier
+    local profile = PROFILES.UNCERTAIN
+    if is_anom or feat.packer_detected == 1.0 then
+        profile = PROFILES.ANOMALY
+    elseif conf >= 75.0 then
+        profile = PROFILES.TRUSTED
+    end
+
+    return {
+        label   = label,
+        conf    = conf,
+        anomaly = is_anom,
+        profile = profile,
+        elapsed = elapsed
+    }
+end
+
+-- ============================================================================
+--  MAIN CRA RUNTIME SUPERVISOR
+-- ============================================================================
+local function main(...)
+    local args = {...}
+    local model_file = args[1]
+    local target_bin = args[2]
+
+    if not model_file or not target_bin then
+        print("MOABI-DYNAMIC v1.0: CRA 2024 Runtime Supervisor")
+        print("Usage: moabi-dynamic.lua <model_file> <target_binary> [args...]")
+        os_t.exit(1)
+    end
+
+    print("========================================================")
+    print("  MOABI GATEKEEPER: PRE-EXECUTION ML TRIAGE")
+    print("========================================================")
+    
+    local verdict = evaluate_binary(model_file, target_bin)
+    
+    print(string.format("  Target Binary:   %s", target_bin))
+    print(string.format("  ML Classification: [%s] (%.1f%% Confidence)", verdict.label, verdict.conf))
+    print(string.format("  Gatekeeper Time: %.2f ms (FFI Accelerated: %s)", verdict.elapsed, tostring(ffi_mod.has_zig_ffi)))
+    print("--------------------------------------------------------")
+    print(string.format("  Assigned Policy: %s%s\27[0m", verdict.profile.color, verdict.profile.name))
+    print(string.format("  Policy Rationale: %s", verdict.profile.desc))
+    print("========================================================\n")
+
+    -- Prepare runtime target args
+    local target_args = {}
+    for i = 3, #args do
+        target_args[#target_args + 1] = string.format('"%s"', args[i])
+    end
+    local arg_str = table.concat(target_args, " ")
+
+    print(string.format("\27[36m[+] Launching Execution Supervisor (PID will attach via strace)...\27[0m\n"))
+
+    -- Construct strace execution wrapper based on dynamic profile tier
+    local trace_expr = verdict.profile.syscalls == "all" and "" or ("-e trace=" .. verdict.profile.syscalls)
+    local supervisor_cmd = string.format('strace -f %s "%s" %s', trace_expr, target_bin, arg_str)
+
+    -- Execute under supervision
+    local status = os_t.execute(supervisor_cmd)
+
+    print("\n========================================================")
+    if status == 0 or status == true then
+        print("\27[32m[✓] Execution completed normally under MOABI supervision.\27[0m")
+    else
+        print("\27[31m[!] Execution terminated with non-zero status or security violation.\27[0m")
+    end
+    print("========================================================")
+end
+
+local ok, err = pcall(main, ...)
+if not ok then
+    io.stderr:write("\nERROR: " .. tostring(err) .. "\n")
+    os_t.exit(1)
+end

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gullwing Dashboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: #0a0a1a;
+            color: #c8c8d4;
+            padding: 24px;
+        }
+        .header {
+            display: flex; align-items: center; gap: 16px;
+            margin-bottom: 24px; padding-bottom: 16px;
+            border-bottom: 1px solid #1a1a3a;
+        }
+        .header h1 { font-size: 28px; color: #64dc8c; }
+        .header .version { font-size: 12px; color: #666; }
+        .status { display: flex; gap: 16px; margin-left: auto; }
+        .status-dot { width: 10px; height: 10px; border-radius: 50%; }
+        .online { background: #64dc8c; box-shadow: 0 0 8px #64dc8c66; }
+        .offline { background: #dc6464; box-shadow: 0 0 8px #dc646466; }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 16px;
+        }
+        .card {
+            background: #111128;
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid #1a1a3a;
+        }
+        .card h2 { font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: #888; margin-bottom: 12px; }
+        .stat-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #1a1a2e; }
+        .stat-row:last-child { border: none; }
+        .stat-label { color: #888; }
+        .stat-value { font-weight: 600; }
+        .risk-CLEAR { color: #64dc8c; }
+        .risk-NOTABLE { color: #64aadc; }
+        .risk-SUSPICIOUS { color: #dcaa64; }
+        .risk-HOSTILE { color: #dc6464; }
+        .risk-EXTREME { color: #dc64dc; }
+        .feed {
+            max-height: 400px;
+            overflow-y: auto;
+            font-size: 13px;
+        }
+        .feed-item {
+            padding: 8px 0;
+            border-bottom: 1px solid #1a1a2e;
+            display: flex; gap: 10px; align-items: center;
+        }
+        .feed-time { color: #555; font-size: 11px; min-width: 70px; }
+        .feed-icon { font-size: 16px; }
+        .bar-container { margin: 8px 0; }
+        .bar-bg { background: #1a1a3a; border-radius: 4px; height: 20px; overflow: hidden; }
+        .bar-fill { height: 100%; border-radius: 4px; transition: width 0.5s; }
+        .bar-CLEAR { background: #64dc8c; }
+        .bar-NOTABLE { background: #64aadc; }
+        .bar-SUSPICIOUS { background: #dcaa64; }
+        .bar-HOSTILE { background: #dc6464; }
+        button {
+            padding: 6px 14px; border: 1px solid #333; border-radius: 6px;
+            background: #1a1a3a; color: #c8c8d4; cursor: pointer; font-size: 12px;
+        }
+        button:hover { background: #222244; }
+        button.active { background: #64dc8c; color: #0a0a1a; border-color: #64dc8c; }
+        .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+        .big-number { font-size: 48px; font-weight: 700; line-height: 1; }
+        .big-label { font-size: 12px; color: #666; margin-top: 4px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🪽 Gullwing</h1>
+        <span class="version">v4.1</span>
+        <div class="status">
+            <span>API:</span>
+            <div class="status-dot" id="apiDot"></div>
+            <span id="apiText">Checking...</span>
+        </div>
+    </div>
+
+    <div class="actions" style="margin-bottom:16px">
+        <button onclick="refreshAll()">🔄 Refresh</button>
+        <button onclick="toggleAutoRefresh()" id="autoBtn">⏱ Auto-Refresh: ON</button>
+        <button onclick="openAPI()">🔗 Open API</button>
+        <button onclick="copyReport()">📋 Copy Status</button>
+    </div>
+
+    <div class="grid">
+        <!-- System Status -->
+        <div class="card">
+            <h2>📊 System</h2>
+            <div class="stat-row"><span class="stat-label">Model</span><span class="stat-value" id="sysModel">—</span></div>
+            <div class="stat-row"><span class="stat-label">Samples</span><span class="stat-value" id="sysSamples">—</span></div>
+            <div class="stat-row"><span class="stat-label">Accuracy</span><span class="stat-value" id="sysAccuracy">—</span></div>
+            <div class="stat-row"><span class="stat-label">Uptime</span><span class="stat-value" id="sysUptime">—</span></div>
+            <div class="stat-row"><span class="stat-label">Watching</span><span class="stat-value" id="sysWatching">—</span></div>
+        </div>
+
+        <!-- Risk Distribution -->
+        <div class="card">
+            <h2>🎯 Risk Distribution</h2>
+            <div id="riskBars">
+                <div class="stat-row"><span>CLEAR</span><span id="riskClear">—</span></div>
+                <div class="bar-container"><div class="bar-bg"><div class="bar-fill bar-CLEAR" id="barClear" style="width:0%"></div></div></div>
+                <div class="stat-row"><span>NOTABLE</span><span id="riskNotable">—</span></div>
+                <div class="bar-container"><div class="bar-bg"><div class="bar-fill bar-NOTABLE" id="barNotable" style="width:0%"></div></div></div>
+                <div class="stat-row"><span>SUSPICIOUS</span><span id="riskSuspicious">—</span></div>
+                <div class="bar-container"><div class="bar-bg"><div class="bar-fill bar-SUSPICIOUS" id="barSuspicious" style="width:0%"></div></div></div>
+                <div class="stat-row"><span>HOSTILE</span><span id="riskHostile">—</span></div>
+                <div class="bar-container"><div class="bar-bg"><div class="bar-fill bar-HOSTILE" id="barHostile" style="width:0%"></div></div></div>
+            </div>
+        </div>
+
+        <!-- Quarantine -->
+        <div class="card">
+            <h2>🔒 Quarantine</h2>
+            <div class="big-number risk-HOSTILE" id="quarCount">0</div>
+            <div class="big-label">Files Quarantined</div>
+            <div id="quarList" style="margin-top:12px; font-size:12px; max-height:120px; overflow-y:auto;"></div>
+        </div>
+
+        <!-- SBOM Summary -->
+        <div class="card">
+            <h2>📦 Latest SBOM</h2>
+            <div class="stat-row"><span class="stat-label">Components</span><span class="stat-value" id="sbomTotal">—</span></div>
+            <div class="stat-row"><span class="stat-label">ELF</span><span class="stat-value" id="sbomElf">—</span></div>
+            <div class="stat-row"><span class="stat-label">PE</span><span class="stat-value" id="sbomPe">—</span></div>
+            <div class="stat-row"><span class="stat-label">Syft Cross-Check</span><span class="stat-value" id="sbomSyft">—</span></div>
+        </div>
+
+        <!-- Live Feed -->
+        <div class="card" style="grid-column: span 2;">
+            <h2>📡 Live Alert Feed</h2>
+            <div class="feed" id="alertFeed">
+                <div class="feed-item"><span class="feed-icon">⏳</span> Waiting for alerts...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API = "http://127.0.0.1:9393";
+        let autoRefresh = true;
+        let refreshTimer;
+
+        async function refreshAll() {
+            await checkAPI();
+            await loadSystemStatus();
+            await loadAlerts();
+            await loadQuarantine();
+            await loadSBOM();
+        }
+
+        async function checkAPI() {
+            const dot = document.getElementById("apiDot");
+            const text = document.getElementById("apiText");
+            try {
+                const r = await fetch(`${API}/status`);
+                if (r.ok) {
+                    dot.className = "status-dot online";
+                    text.textContent = "Online";
+                } else { throw new Error(); }
+            } catch {
+                dot.className = "status-dot offline";
+                text.textContent = "Offline — run: gullwing serve";
+            }
+        }
+
+        async function loadSystemStatus() {
+            try {
+                const r = await fetch(`${API}/status`);
+                const d = await r.json();
+                document.getElementById("sysModel").textContent = d.model ? d.model.split("/").pop() : "—";
+                document.getElementById("sysUptime").textContent = d.uptime ? Math.floor((Date.now()/1000 - d.uptime) / 60) + " min" : "—";
+                
+                // Check for watch processes
+                try {
+                    const wr = await fetch(`${API}/status`);
+                    document.getElementById("sysWatching").textContent = "Active";
+                } catch { document.getElementById("sysWatching").textContent = "—"; }
+            } catch {}
+        }
+
+        async function loadAlerts() {
+            const feed = document.getElementById("alertFeed");
+            try {
+                const r = await fetch(`${API}/status`);
+                if (!r.ok) { feed.innerHTML = '<div class="feed-item">⚠️ API offline</div>'; return; }
+                
+                // Try to load alert log
+                const alertsResp = await fetch(`file:///mnt/d/moabi/reports/watch/alerts.log`);
+                if (alertsResp.ok) {
+                    const text = await alertsResp.text();
+                    const lines = text.trim().split("\n").filter(l => l.includes("—")).slice(-15);
+                    if (lines.length === 0) {
+                        feed.innerHTML = '<div class="feed-item"><span class="feed-icon">✅</span> No alerts — system secure</div>';
+                    } else {
+                        feed.innerHTML = lines.reverse().map(line => {
+                            const time = line.match(/\[([^\]]+)\]/);
+                            const risk = line.match(/CLEAR|NOTABLE|SUSPICIOUS|HOSTILE/);
+                            const icon = {CLEAR:"🟢",NOTABLE:"🟡",SUSPICIOUS:"🟠",HOSTILE:"🔴"}[risk?.[0]] || "📡";
+                            return `<div class="feed-item"><span class="feed-time">${time?.[1] || "?"}</span><span class="feed-icon">${icon}</span>${line.replace(/\[.*?\]/, "").trim()}</div>`;
+                        }).join("");
+                    }
+                } else {
+                    feed.innerHTML = '<div class="feed-item"><span class="feed-icon">📡</span> Alert log not accessible from browser</div>';
+                }
+            } catch {
+                feed.innerHTML = '<div class="feed-item"><span class="feed-icon">📡</span> Alert log not accessible — check file:// permissions</div>';
+            }
+        }
+
+        async function loadQuarantine() {
+            try {
+                // This won't work from browser due to file:// restrictions
+                // But we can show what the API knows
+                document.getElementById("quarCount").textContent = "—";
+                document.getElementById("quarList").innerHTML = "<span style='color:#666'>Run 'gullwing agent status' in terminal</span>";
+            } catch {}
+        }
+
+        async function loadSBOM() {
+            try {
+                document.getElementById("sbomTotal").textContent = "—";
+                document.getElementById("sbomElf").textContent = "—";
+                document.getElementById("sbomPe").textContent = "—";
+                document.getElementById("sbomSyft").textContent = "Run 'gullwing sbom' to generate";
+            } catch {}
+        }
+
+        function toggleAutoRefresh() {
+            autoRefresh = !autoRefresh;
+            const btn = document.getElementById("autoBtn");
+            if (autoRefresh) {
+                btn.textContent = "⏱ Auto-Refresh: ON";
+                btn.classList.add("active");
+                refreshTimer = setInterval(refreshAll, 5000);
+            } else {
+                btn.textContent = "⏱ Auto-Refresh: OFF";
+                btn.classList.remove("active");
+                clearInterval(refreshTimer);
+            }
+        }
+
+        function openAPI() {
+            window.open(`${API}/status`, "_blank");
+        }
+
+        function copyReport() {
+            const status = [];
+            document.querySelectorAll(".stat-row").forEach(row => {
+                status.push(row.textContent.trim());
+            });
+            navigator.clipboard.writeText(status.join("\n"));
+        }
+
+        // Initial load
+        refreshAll();
+        refreshTimer = setInterval(refreshAll, 5000);
+    </script>
+</body>
+</html>

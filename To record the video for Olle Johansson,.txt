@@ -1,0 +1,33 @@
+ecord the video for Olle Johansson, Anthony Harrison, and the CycloneDX community.
+
+Here is the exact sequence to run in your terminal while recording:
+
+Step 1: The Setup
+
+Bash
+
+clear
+echo "MOABI v1.0 — Convergent Binary Evidence Platform"
+echo "Generating CycloneDX 1.6 SBOM for Windows System32..."
+Step 2: The Scan (Show the speed and depth)
+
+Bash
+
+luajit /mnt/d/moabi/src/moabi-sbom.lua /mnt/c/Windows/System32 --out system32.cdx.json
+Step 3: The Gullwing Dashboard (The visual proof)
+
+Bash
+
+luajit /mnt/d/moabi/src/moabi-view.lua system32.cdx.json
+Step 4: The Model-BOM (The AI Transparency proof)
+
+Bash
+
+echo "Verifying ML Classifier Lineage..."
+cat /mnt/d/moabi/reports/system.model-bom.json | jq '.explainability.metrics | to_entries | sort_by(.value) | reverse | .[0:5]'
+Step 5: The TEA Integration (The payload)
+
+Bash
+
+echo "CycloneDX Payload ready for Transparency Exchange API."
+head -n 20 system32.cdx.json

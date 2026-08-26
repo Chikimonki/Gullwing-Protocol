@@ -1,0 +1,2 @@
+feat.import_count = math.log((r.import_count or r.dependency_count or 0) + 1)
+feat.export_count = math.log((r.export_count or 0) + 1)

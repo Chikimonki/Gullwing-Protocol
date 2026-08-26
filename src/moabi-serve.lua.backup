@@ -1,0 +1,178 @@
+#!/usr/bin/env luajit
+--============================================================================
+--  MOABI-SERVE v2.2 — Gullwing HTTP API
+--============================================================================
+
+local SRC = "/mnt/d/moabi/src"
+local REFLECT = SRC .. "/moabi-reflect.lua"
+local MODEL_PATH = "/mnt/d/moabi/reports/system.model"
+local PORT = 9393
+
+package.path = SRC .. "/?.lua;" .. package.path
+package.cpath = "/usr/lib/x86_64-linux-gnu/lua/5.1/?.so;" .. package.cpath
+package.path = "/usr/share/lua/5.1/?.lua;" .. package.path
+local socket = require("socket")
+local json = require("json")
+
+local function shq(s) return "'" .. tostring(s):gsub("'", "'\\''") .. "'" end
+local function file_exists(p) local f=io.open(p,"rb"); if f then f:close() return true end; return false end
+local function url_decode(s) return s:gsub("+", " "):gsub("%%(%x%x)", function(h) return string.char(tonumber(h, 16)) end) end
+
+-- ============================================================================
+--  HANDLERS
+-- ============================================================================
+
+local function nl_summary(evidence)
+    local c = evidence.convergence or {}; local ml = evidence.ml or {}; local id = evidence.identity or {}
+    local sem = evidence.semantics or {}; local st = evidence.structure or {}
+    local libs = {}; if sem.libraries then for lib, v in pairs(sem.libraries) do if v then libs[#libs+1] = lib end end end
+    local risk_msg = { CLEAR="No suspicious indicators.", NOTABLE="Minor anomalies.", SUSPICIOUS="Concerning signals.", HOSTILE="CRITICAL: Tampered or malicious." }
+    return string.format("BINARY: %s (%d bytes)\nCLASS: %s (%.1f%%)\nRISK: %s | NOVELTY: %s\nLIBRARIES: %s\nVERDICT: %s\n%s\nSignals: %s",
+        (id.path or "?"):match("([^/]+)$") or "?", id.size or 0, ml.class or "?", ml.confidence or 0,
+        c.risk_tier or "?", c.novelty_tier or "?", #libs > 0 and table.concat(libs, ", ") or "none",
+        (c.risk_tier or "?") .. " — " .. (c.novelty_tier or "?"), risk_msg[c.risk_tier] or "",
+        #(c.signals or {}) > 0 and table.concat(c.signals, "; ") or "none")
+end
+
+local function handle_reflect(params)
+    local t = params.path or params.target; if not t or t == "" then return 400, json.encode({error="missing path"}) end
+    os.execute("luajit " .. shq(REFLECT) .. " " .. shq(t) .. " --static-only --json --model " .. shq(MODEL_PATH) .. " 2>/dev/null")
+    local n = t:match("([^/]+)$") or "?"; local ep = "/mnt/d/moabi/reports/" .. n .. ".evidence.json"
+    local f = io.open(ep,"r"); if not f then return 500, json.encode({error="failed"}) end
+    local ev = json.decode(f:read("*a")); f:close()
+    return 200, json.encode({evidence=ev, natural_language=nl_summary(ev)})
+end
+
+local function handle_status()
+    local sha = "?"; if file_exists(MODEL_PATH) then local h = io.popen("sha256sum "..shq(MODEL_PATH).." 2>/dev/null"); sha = h:read("*a"):match("^(%x+)") or "?"; h:close() end
+    return 200, json.encode({status="ok", version="4.2", model=MODEL_PATH, model_sha256=sha, uptime=os.time()})
+end
+
+local function handle_mcp()
+    return 200, json.encode({
+        schemaVersion = "1.0",
+        tools = {
+            {name = "gullwing_reflect", description = "8-layer convergent binary analysis", inputSchema = {type = "object", properties = {path = {type = "string"}}, required = {"path"}}},
+            {name = "gullwing_status", description = "Platform health check", inputSchema = {type = "object", properties = {}}},
+        }
+    })
+end
+
+local function handle_health()
+    local ok = file_exists(MODEL_PATH); local sha = "?"
+    if ok then local h = io.popen("sha256sum "..shq(MODEL_PATH).." 2>/dev/null"); sha = h:read("*a"):match("^(%x+)") or "?"; h:close() end
+    return 200, json.encode({healthy=ok, model_sha256=sha, model_integrity=ok and "verified" or "MISSING"})
+end
+
+local function handle_nl(params)
+    local t = params.path; if not t then return 400, json.encode({error="missing path"}) end
+    os.execute("luajit " .. shq(REFLECT) .. " " .. shq(t) .. " --static-only --json --model " .. shq(MODEL_PATH) .. " 2>/dev/null")
+    local n = t:match("([^/]+)$") or "?"; local ep = "/mnt/d/moabi/reports/" .. n .. ".evidence.json"
+    local f = io.open(ep,"r"); if not f then return 500, json.encode({error="failed"}) end
+    local ev = json.decode(f:read("*a")); f:close()
+    return 200, json.encode({summary=nl_summary(ev)})
+end
+
+local function handle_wcc(params)
+    local t = params.path or params.target; if not t or t == "" then return 400, json.encode({error="missing path"}) end
+    local n = t:match("([^/]+)$") or "?"; local lib = "/tmp/" .. n .. ".so"; local hdr = "/tmp/" .. n .. ".h"
+    os.execute("cp " .. shq(t) .. " " .. shq(lib) .. " 2>/dev/null"); os.execute("wld -libify " .. shq(lib) .. " 2>/dev/null")
+    os.execute("wcch " .. shq(lib) .. " > " .. shq(hdr) .. " 2>/dev/null")
+    local fc, fs = 0, {}; local nm = io.popen("nm -D " .. shq(lib) .. " 2>/dev/null | grep ' T ' | head -20")
+    if nm then for line in nm:lines() do local fn = line:match(" T (.+)$"); if fn then fs[#fs+1]=fn; fc=fc+1 end end; nm:close() end
+    os.execute("luajit " .. shq(REFLECT) .. " " .. shq(lib) .. " --static-only --json --model " .. shq(MODEL_PATH) .. " 2>/dev/null")
+    local wh = io.popen("wldd " .. shq(t) .. " 2>&1"); local bf = wh:read("*a"):gsub("%s+$",""); wh:close()
+    local hc = ""; local hf = io.open(hdr,"r"); if hf then hc = hf:read("*a"):sub(1,2000); hf:close() end
+    return 200, json.encode({original=t, libified=lib, header_file=hdr, exported_functions=fc, function_list=fs, build_flags=bf, header_preview=hc, note="wsh "..lib})
+end
+
+local function handle_wcc_deep(params)
+    local t = params.path or params.target; if not t or t == "" then return 400, json.encode({error="missing path"}) end
+    local n = t:match("([^/]+)$") or "?"; local lib = "/tmp/" .. n .. ".so"
+    os.execute("cp " .. shq(t) .. " " .. shq(lib) .. " 2>/dev/null"); os.execute("wld -libify " .. shq(lib) .. " 2>/dev/null")
+    local wh = io.popen("echo 'functions()' | wsh " .. shq(lib) .. " 2>/dev/null"); local out = wh:read("*a"); wh:close()
+    local total = tonumber(out:match("(%d+) functions matched") or "0")
+    local fs = {}
+    for line in out:gmatch("[^\n]+") do
+        local libn, fn = line:match("^(%S+%.[%w%.]+)%s+(%S+)%s+Function")
+        if libn and fn and #fs < 200 then fs[#fs+1] = {library=libn:match("([^/]+)$") or libn, name=fn} end
+    end
+    if #fs == 0 then
+        local nm = io.popen("nm -D " .. shq(lib) .. " 2>/dev/null | grep ' T ' | head -200")
+        if nm then for line in nm:lines() do local fn = line:match(" T (.+)$"); if fn and not fn:match("^_") then fs[#fs+1]={library="direct", name=fn} end end; nm:close() end
+        if total == 0 then local ch = io.popen("nm -D "..shq(lib).." 2>/dev/null | grep ' T ' | wc -l"); total = tonumber(ch:read("*a") or "0"); ch:close() end
+    end
+    return 200, json.encode({libified=lib, total_functions=total, functions=fs, note="wsh "..lib})
+end
+
+local function handle_metamorph(params)
+    local p1, p2 = params.path1, params.path2
+    if not p1 or not p2 then return 400, json.encode({error="need path1 and path2"}) end
+    local h = io.popen("luajit " .. shq(SRC.."/gullwing-metamorph.lua") .. " " .. shq(p1) .. " " .. shq(p2) .. " 2>&1")
+    local out = h:read("*a"); h:close()
+    local sim = tonumber(out:match("BIGRAM SIMILARITY: ([%d%.]+)%%") or "0")
+    local ver = out:match("VERDICT: ([^\n]+)") or "?"
+    return 200, json.encode({path1=p1, path2=p2, similarity=sim, verdict=ver})
+end
+
+local function handle_llm(params)
+    local t = params.path or params.target; local q = params.question or "Analyze this binary."
+    if not t then return 400, json.encode({error="missing path"}) end
+    os.execute("luajit " .. shq(REFLECT) .. " " .. shq(t) .. " --static-only --json --model " .. shq(MODEL_PATH) .. " 2>/dev/null")
+    local n = t:match("([^/]+)$") or "?"; local ep = "/mnt/d/moabi/reports/" .. n .. ".evidence.json"
+    if not file_exists(ep) then return 500, json.encode({error="analysis failed"}) end
+    local f = io.open(ep); local ev = json.decode(f:read("*a")); f:close()
+    local c = ev.convergence or {}; local ml = ev.ml or {}; local id = ev.identity or {}; local sem = ev.semantics or {}
+    local libs = {}; if sem.libraries then for lib, v in pairs(sem.libraries) do if v then libs[#libs+1] = lib end end end
+    local prompt = string.format("Binary: %s | Size: %d bytes | Class: %s (%.1f%%) | Risk: %s | Libraries: %s | Signals: %s\n\nQuestion: %s\n\nProvide a clear security analysis in plain English.",
+        id.path or "?", id.size or 0, ml.class or "?", ml.confidence or 0, c.risk_tier or "?",
+        #libs>0 and table.concat(libs,", ") or "none", #(c.signals or {})>0 and table.concat(c.signals,"; ") or "none", q)
+    local tmp = os.tmpname(); local tf = io.open(tmp,"w"); tf:write(prompt); tf:close()
+    local oh = io.popen("ollama run phi4-mini < " .. shq(tmp) .. " 2>/dev/null")
+    local resp = oh:read("*a") or "No response from LLM."; oh:close(); os.remove(tmp)
+    return 200, json.encode({question=q, target=t, analysis=resp:gsub("^%s+",""):gsub("%s+$",""),
+        summary={class=ml.class, confidence=ml.confidence, risk=c.risk_tier, novelty=c.novelty_tier}})
+end
+
+-- ============================================================================
+--  SERVER
+-- ============================================================================
+
+local function respond(client, code, body)
+    client:send(string.format("HTTP/1.1 %d %s\r\nContent-Type: application/json\r\nAccess-Control-Allow-Origin: *\r\nConnection: close\r\nContent-Length: %d\r\n\r\n%s", code, code==200 and "OK" or "Error", #body, body))
+    client:close()
+end
+
+local function start()
+    local server = socket.tcp(); server:setoption("reuseaddr", true); assert(server:bind("127.0.0.1", PORT)); server:listen(10)
+    print(string.format("GULLWING-SERVE v2.2 — http://127.0.0.1:%d", PORT))
+    print("  /status /mcp /health /reflect /nl /wcc /wcc/deep /metamorph/compare /llm")
+    while true do
+        local client = server:accept()
+        if client then
+            client:settimeout(5)
+            local line = client:receive("*l")
+            if line then
+                local method, path = line:match("^(%S+)%s+(%S+)")
+                local clen = 0
+                while true do local hdr = client:receive("*l"); if not hdr or hdr == "" then break end; local cl = hdr:match("^Content%-Length:%s+(%d+)"); if cl then clen = tonumber(cl) end end
+                local body = clen > 0 and (client:receive(clen) or "") or ""
+                local params = {}; for k,v in body:gmatch("([^&=]+)=([^&]*)") do params[url_decode(k)] = url_decode(v) end
+                local code, resp = 404, json.encode({error="not found"})
+                if path == "/status" then code, resp = handle_status()
+                elseif path == "/mcp" then code, resp = handle_mcp()
+                elseif path == "/health" then code, resp = handle_health()
+                elseif path == "/reflect" and method == "POST" then code, resp = handle_reflect(params)
+                elseif path == "/nl" and method == "POST" then code, resp = handle_nl(params)
+                elseif path == "/wcc" and method == "POST" then code, resp = handle_wcc(params)
+                elseif path == "/wcc/deep" and method == "POST" then code, resp = handle_wcc_deep(params)
+                elseif path == "/metamorph/compare" and method == "POST" then code, resp = handle_metamorph(params)
+                elseif path == "/llm" and method == "POST" then code, resp = handle_llm(params)
+                end
+                respond(client, code, resp)
+            else client:close() end
+        end
+    end
+end
+
+start()

@@ -1,0 +1,90 @@
+# ============================================================================
+# GULLWING SUPPLY-CHAIN GATE — GitHub Actions
+# One gated job: harness → moabi-delta → syft → cross-check.
+# The job FAILS if fixtures are invalid, the delta is empty, or the
+# cross-check finds detection gaps (exit code 1 from sbom_crosscheck.py).
+# All evidence (reports, SBOMs, ground truth) is uploaded as artifacts
+# for the CRA / Security & Resilience audit trail.
+# ============================================================================
+name: Gullwing Supply Chain Gate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  gullwing-gate:
+    name: Dependency-tree verification gate
+    runs-on: ubuntu-latest
+    env:
+      SCEN_ROOT: /tmp/moabi_scenarios
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install toolchain (gcc, binutils, syft, moabi)
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq build-essential binutils python3
+          # syft (reference scanner)
+          curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh \
+            | sh -s -- -b /usr/local/bin
+          # ------------------------------------------------------------------
+          # ADAPT: install moabi-delta per your deployment (private release,
+          # vendor repo, or license server). Example:
+          #   curl -sSL "${{ secrets.MOABI_RELEASE_URL }}" -o /usr/local/bin/moabi-delta
+          #   chmod +x /usr/local/bin/moabi-delta
+          # ------------------------------------------------------------------
+          command -v moabi-delta >/dev/null || {
+            echo "::error::moabi-delta not installed — set the install step above"; exit 1; }
+
+      - name: Build fixtures + self-verify (harness)
+        run: ./moabi_test_scenarios.sh "$SCEN_ROOT"
+
+      - name: Ground truth evidence (readelf)
+        run: |
+          mkdir -p evidence
+          for d in "$SCEN_ROOT"/*/; do
+            name=$(basename "$d")
+            readelf -d "$d/app" 2>/dev/null | grep NEEDED > "evidence/$name.NEEDED.txt" || true
+          done
+
+      - name: Moabi delta scan (old vs tampered)
+        run: |
+          # ------------------------------------------------------------------
+          # ADAPT: adjust flags to your moabi CLI / version.
+          # Gate condition: the report must show a NON-EMPTY dependency delta.
+          # ------------------------------------------------------------------
+          moabi-delta "$SCEN_ROOT/A_baseline" "$SCEN_ROOT/B_added_dt_needed" \
+            | tee evidence/moabi_delta_report.txt
+          grep -Eq 'Dependency relationships: [1-9]' evidence/moabi_delta_report.txt || {
+            echo "::error::Moabi delta is EMPTY — dependency tree not reported"; exit 1; }
+          # Export Moabi's SBOM for the cross-check (ADAPT flag to your version):
+          moabi-delta sbom "$SCEN_ROOT/B_added_dt_needed" -o cyclonedx-json \
+            > evidence/moabi_sbom.json
+
+      - name: Syft reference scan
+        run: syft "dir:$SCEN_ROOT/B_added_dt_needed" -o cyclonedx-json \
+             > evidence/syft_sbom.json
+
+      - name: Cross-check (THE GATE)
+        run: |
+          # Exits 1 if syft sees components Moabi's SBOM missed → job fails.
+          python3 sbom_crosscheck.py evidence/moabi_sbom.json evidence/syft_sbom.json \
+            --json evidence/gaps.json | tee evidence/crosscheck_report.txt
+
+      - name: Known blind-spot probes (informational, not gating)
+        if: always()
+        run: |
+          echo "Scenario C (dlopen) DT_NEEDED:" | tee -a evidence/blindspots.txt
+          cat "evidence/C_dlopen_shadow.NEEDED.txt" | tee -a evidence/blindspots.txt
+          echo "Scenario D (static) DT_NEEDED entries: $(readelf -d "$SCEN_ROOT/D_static/app" 2>/dev/null | grep -c NEEDED || echo 0)" | tee -a evidence/blindspots.txt
+
+      - name: Upload evidence artifacts (audit trail)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gullwing-evidence-${{ github.run_number }}
+          path: evidence/
+          retention-days: 90   # align with your evidence-retention policy

@@ -1,0 +1,8 @@
+*.o
+*.so
+*.bin
+.zig-cache/
+pycache/
+quarantine/
+reports/
+*.log

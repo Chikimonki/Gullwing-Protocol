@@ -1,0 +1,1 @@
+return {samples={},normalization={mean={},std={}},class_counts={},anomaly_threshold=0/0,info={version=3,class_counts={},anomaly_threshold=0/0},_online_n=0,_online_mean={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},_online_M2={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},k=5}

@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "Gullwing — Binary Analysis + Back Button Protection",
+  "version": "1.1",
+  "description": "Analyzes downloads and detects back button hijacking attacks",
+  "permissions": ["downloads", "notifications", "storage", "webNavigation", "tabs"],
+  "host_permissions": ["http://127.0.0.1:9393/*"],
+  "background": { "service_worker": "background.js" },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Gullwing"
+  },
+  "icons": { "48": "icon.png", "128": "icon.png" }
+}

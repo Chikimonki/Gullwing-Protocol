@@ -1,0 +1,65 @@
+# ============================================================================
+# GULLWING SUPPLY-CHAIN GATE — GitLab CI
+# Same gate as the GitHub Actions version, one job:
+# harness → moabi-delta → syft → cross-check. Job fails on any gap.
+# ============================================================================
+stages: [verify]
+
+gullwing-gate:
+  stage: verify
+  image: debian:bookworm-slim
+  variables:
+    SCEN_ROOT: /tmp/moabi_scenarios
+  before_script:
+    - apt-get update -qq && apt-get install -y -qq build-essential binutils python3 curl
+    # syft (reference scanner)
+    - curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin
+    # ------------------------------------------------------------------
+    # ADAPT: install moabi-delta per your deployment (Job protected variable
+    # MOABI_RELEASE_URL keeps the download link out of the repo):
+    #   curl -sSL "$MOABI_RELEASE_URL" -o /usr/local/bin/moabi-delta
+    #   chmod +x /usr/local/bin/moabi-delta
+    # ------------------------------------------------------------------
+    - command -v moabi-delta >/dev/null || { echo "moabi-delta not installed"; exit 1; }
+  script:
+    # 1. Fixtures + self-verification
+    - ./moabi_test_scenarios.sh "$SCEN_ROOT"
+
+    # 2. Ground truth evidence
+    - mkdir -p evidence
+    - |
+      for d in "$SCEN_ROOT"/*/; do
+        name=$(basename "$d")
+        readelf -d "$d/app" 2>/dev/null | grep NEEDED > "evidence/$name.NEEDED.txt" || true
+      done
+
+    # 3. Moabi delta (ADAPT flags) — gate: delta must be non-empty
+    - |
+      moabi-delta "$SCEN_ROOT/A_baseline" "$SCEN_ROOT/B_added_dt_needed" \
+        | tee evidence/moabi_delta_report.txt
+      grep -Eq 'Dependency relationships: [1-9]' evidence/moabi_delta_report.txt || {
+        echo "Moabi delta is EMPTY — dependency tree not reported"; exit 1; }
+    - moabi-delta sbom "$SCEN_ROOT/B_added_dt_needed" -o cyclonedx-json > evidence/moabi_sbom.json
+
+    # 4. Syft reference scan
+    - syft "dir:$SCEN_ROOT/B_added_dt_needed" -o cyclonedx-json > evidence/syft_sbom.json
+
+    # 5. THE GATE — exits 1 on detection gaps
+    - python3 sbom_crosscheck.py evidence/moabi_sbom.json evidence/syft_sbom.json
+        --json evidence/gaps.json | tee evidence/crosscheck_report.txt
+
+    # 6. Blind-spot probes (informational)
+    - |
+      {
+        echo "Scenario C (dlopen) DT_NEEDED:"
+        cat evidence/C_dlopen_shadow.NEEDED.txt
+        echo "Scenario D (static) DT_NEEDED entries: $(readelf -d "$SCEN_ROOT/D_static/app" 2>/dev/null | grep -c NEEDED || echo 0)"
+      } | tee evidence/blindspots.txt
+  artifacts:
+    when: always                      # keep evidence even when the gate fails
+    expire_in: 90 days                # align with your evidence-retention policy
+    paths:
+      - evidence/
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
