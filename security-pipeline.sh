@@ -22,7 +22,7 @@ echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo "1. 🦅 GULLWING DETECTS (25ms)"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-luajit "$REFLECT" "$TARGET" --static-only | grep -E "Risk|Novelty|Class|Confidence|Anomaly"
+luajit "$REFLECT" "$TARGET" --static-only | grep -E "Risk:|Novelty:|Confidence:|Anomaly:" | grep -v "ELF64"
 
 # Check if suspicious
 if luajit "$REFLECT" "$TARGET" --static-only | grep -q "NOTABLE\|ELEVATED\|CRITICAL"; then
@@ -41,10 +41,15 @@ if luajit "$REFLECT" "$TARGET" --static-only | grep -q "NOTABLE\|ELEVATED\|CRITI
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
     echo "3. 🔍 WSOLVER INVESTIGATES"
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-    if command -v wsolve &> /dev/null; then
+    if [ -f "wsolver/wsolve" ]; then
+        echo "Running wsolver..."
+        ./wsolver/wsolve "$TARGET" 2>&1 | head -20
+    elif command -v wsolve &> /dev/null; then
+        echo "Running wsolver..."
         wsolve "$TARGET" 2>&1 | head -20
     else
-        echo "wsolver would investigate here (install separately)"
+        echo "⚠️ wsolver not built"
+        echo "Build with: cd wsolver && make"
         echo "Expected: UNSAFE with concrete exploitation witnesses"
     fi
     
@@ -53,10 +58,15 @@ if luajit "$REFLECT" "$TARGET" --static-only | grep -q "NOTABLE\|ELEVATED\|CRITI
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
     echo "4. 🤖 KESTREL EXPLAINS"
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    # Check if API is running first
+if curl -s http://127.0.0.1:9393/health > /dev/null 2>&1; then
     curl -s -X POST http://127.0.0.1:9393/llm \
       -d "path=$TARGET&question=What are the security implications?" \
-      | python3 -c "import sys, json; data=json.load(sys.stdin); print(data.get('analysis','No analysis')[:400])" 2>/dev/null \
-      || echo "Kestrel API not reachable (start with ./start-server.sh)"
+      | python3 -c "import sys, json; data=json.load(sys.stdin); print(data.get('analysis','No analysis')[:400])" 2>/dev/null
+else
+    echo "⚠️ Kestrel API not running"
+    echo "Start with: ./start-server.sh"
+fi
     
     # 5. Party Vault Documents
     echo ""

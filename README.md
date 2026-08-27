@@ -164,3 +164,23 @@ MIT — 100% open source.
 ---
 
 *A complete security department in a box — detect, audit, comply, explain. On your hardware.*
+
+## ⚠️ Docker Requirements (Optional)
+
+The Witchcraft Solver (wsolver) has two modes:
+
+### Basic Mode (No Docker Required)
+```bash
+cd wsolver
+make        # Builds native tools (~1MB)
+./wsolve <binary>
+Works for basic binary analysis.
+
+Full Mode (Docker Required — ~5GB)
+bash
+cd wsolver
+make docker # Builds solver image (KLEE, SeaHorn, SMACK, IKOS)
+Requires ~5GB disk space. On WSL, ensure Docker data is on D: drive:
+See WSL-DOCKER-SETUP.md for instructions.
+
+Note: The core Gullwing Protocol (detection, quarantine, AI analysis) works without Docker.
