@@ -6,3 +6,7 @@ pycache/
 quarantine/
 reports/
 *.log
+
+# Large files (use Git LFS or download separately)
+*.iso
+src/bin/syft
