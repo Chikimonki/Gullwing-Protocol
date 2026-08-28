@@ -10,18 +10,7 @@
 [![Stars](https://img.shields.io/github/stars/Chikimonki/Gullwing-Protocol?style=social)](https://github.com/Chikimonki/Gullwing-Protocol/stargazers)
 [![Forks](https://img.shields.io/github/forks/Chikimonki/Gullwing-Protocol?style=social)](https://github.com/Chikimonki/Gullwing-Protocol/forks)
 
-#Gullwing Protocol — Complete Security Suite
-License: MIT
-Tests
-CRA
-CISA
-Open Source
-Lua
-Zig
-Platform
-PRs Welcome
-Stars
-Forks
+## Gullwing Protocol — Complete Security Suite
 
 A complete security department in a box: detect, audit, comply, and explain — fully open-source, fully air-gapped, running on your infrastructure.
 
