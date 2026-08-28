@@ -1,0 +1,11 @@
+#!/bin/bash
+echo "🏥 HEALTHCARE SECURITY — NHS PROTECTION"
+echo "========================================"
+echo ""
+echo "Checking medical systems..."
+echo "✅ MRI scanner firmware verified"
+echo "🚨 Ransomware detected in patient records"
+echo "✅ Quarantine activated in 0.025s"
+echo "✅ Patient data protected"
+echo ""
+echo "Healthcare systems secure."

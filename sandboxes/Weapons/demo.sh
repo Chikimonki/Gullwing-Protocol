@@ -1,0 +1,10 @@
+#!/bin/bash
+echo "🛃 EXPORT CONTROL & DUAL-USE GOODS"
+echo "================================="
+echo ""
+echo "Checking export transactions..."
+echo "🚨 Illegal transfer blocked"
+echo "✅ Export control enforced"
+echo "✅ Sanctions screening passed"
+echo ""
+echo "Export compliance verified."

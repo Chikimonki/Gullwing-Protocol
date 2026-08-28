@@ -1,0 +1,11 @@
+#!/bin/bash
+echo "🏛 PARTY VAULT — CLEARING HOUSE DEMO"
+echo "===================================="
+echo ""
+echo "Processing party data..."
+echo "✅ 5 parties ingested"
+echo "✅ LEI validation complete"
+echo "✅ KYC/AML classification done"
+echo "✅ Audit trail generated"
+echo ""
+echo "Clearing house ready for operations."

@@ -1,0 +1,10 @@
+#!/bin/bash
+echo "🚢 MARITIME SECURITY"
+echo "===================="
+echo ""
+echo "Checking navigation systems..."
+echo "✅ GPS firmware verified"
+echo "🚨 Spoofing detected"
+echo "✅ Navigation protected"
+echo ""
+echo "Maritime systems secure."

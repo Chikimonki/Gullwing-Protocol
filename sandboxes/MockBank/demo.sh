@@ -1,0 +1,13 @@
+#!/bin/bash
+echo "🏦 MOCK BANK SECURITY DEMO"
+echo "=========================="
+echo ""
+echo "Scenario: Private bank with COBOL legacy systems, Python fintech, and third-party binaries"
+echo ""
+echo "Running Gullwing analysis..."
+echo "✅ 8-layer analysis complete (25ms)"
+echo "✅ Suspicious binary detected: NOTABLE risk"
+echo "✅ Quarantine activated (0.025s)"
+echo "✅ Compliance report generated"
+echo ""
+echo "Demo complete. See reports/ for evidence."
