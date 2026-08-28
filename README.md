@@ -212,7 +212,7 @@ Gullwing core runs on **Linux, WSL2 and macOS**.
 | Zig toolchain | Compute kernels |
 | Perl | Ingestion and record processing |
 | Python 3 | Tooling, demos, reporting |
-| Docker *(optional, ~5 GB)* | Full Witchcraft Solver mode (KLEE, SeaHorn, SMACK, IKOS) |
+| Docker *(optional)* | Only for wsolver (see @endrazine's README) |
 
 > 💡 On storage-constrained systems, point Docker's data root at a larger volume before building the solver image.
 
@@ -231,9 +231,6 @@ git submodule update --init --recursive
 # Quick check (25ms)
 gullwing check /usr/bin/ls
 
-# Deep vulnerability check (if wsolver built)
-gullwing deep-check /usr/bin/ls
-
 # Run the security pipeline
 ./scripts/security-pipeline.sh /usr/bin/ls
 
@@ -250,28 +247,15 @@ gullwing deep-check /usr/bin/ls
 
 ---
 
-## 🔧 Witchcraft Solver — Docker Modes (Optional)
+## 🔧 Witchcraft Solver (Optional)
 
-### Basic Mode (No Docker Required)
-```bash
-cd wsolver
-make        # Builds native tools (~1MB)
-./wsolve <binary>
-```
+**wsolver is Jonathan Brossard's (@endrazine) project.**
 
-### Full Mode (Docker Required — ~5GB)
+For installation, requirements, build instructions, and usage, refer to the [wsolver README](https://github.com/endrazine/wsolver).
 
-cd wsolver
-make docker # Builds solver image (KLEE, SeaHorn, SMACK, IKOS)
-```
+**We do not provide support for wsolver.** We include it as a git submodule for convenience only.
 
-> ⚠️ **EXPERIMENTAL:** wsolver is research-grade software. Use in production only after understanding its limitations.
-
-### LLM Triage Integration
-
-wsolver finds crashes. Kestrel determines if they're attacker-reachable. Together they provide a sound verdict.
-
-> **Note:** The core Gullwing Protocol (detection, quarantine, AI analysis) works without Docker.
+**Gullwing is complete without wsolver.** Our core functionality does not depend on it.
 
 ---
 

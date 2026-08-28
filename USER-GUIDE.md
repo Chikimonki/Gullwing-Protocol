@@ -162,9 +162,13 @@ Gullwing is **both a detective AND a bodyguard** — it investigates AND it acts
 
 ## Witchcraft Solver (wsolver)
 
-wsolver is **Jonathan Brossard's (@endrazine) research project**, included as a submodule. We have not independently verified its claims. Refer to the [wsolver README](https://github.com/endrazine/wsolver) for authoritative information.
+**wsolver is Jonathan Brossard's (@endrazine) project.**
 
-**Gullwing is complete without wsolver.**
+For installation, requirements, build instructions, and usage, refer to the [wsolver README](https://github.com/endrazine/wsolver).
+
+**We do not provide support for wsolver.** We include it as a submodule for convenience only.
+
+**Gullwing is complete without wsolver. Our core functionality does not depend on it.**
 
 ## Docker Setup (WSL)
 
@@ -193,7 +197,7 @@ sudo systemctl start docker
 | Port 9393 in use | `./kill-servers.sh` |
 | Port 8081 in use | `fuser -k 8081/tcp` |
 | Frontend not loading | Start Python server (see Quick Start) |
-| Docker image missing | `cd wsolver && make docker` |
+| Docker image missing | See @endrazine's wsolver README |
 | Ollama not responding | `sudo systemctl restart ollama` |
 
 ## Trust & Verification
