@@ -1,0 +1,38 @@
+name: Gullwing Protocol Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+      
+      - name: Install LuaJIT
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y luajit python3
+      
+      - name: Test core analysis
+        run: |
+          luajit src/moabi-reflect.lua /usr/bin/ls --static-only | head -30
+      
+      - name: Test API server
+        run: |
+          luajit src/moabi-serve.lua &
+          sleep 3
+          curl http://127.0.0.1:9393/health
+      
+      - name: Test arcade games
+        run: |
+          curl -X POST http://127.0.0.1:9393/api/run-game -d "game=golf&level=cheat" | head -20
+      
+      - name: Test security pipeline
+        run: |
+          ./security-pipeline.sh /usr/bin/ls | head -30
