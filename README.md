@@ -1,4 +1,16 @@
-Gullwing Protocol — Complete Security Suite
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Tests](https://github.com/Chikimonki/Gullwing-Protocol/actions/workflows/main.yml/badge.svg)](https://github.com/Chikimonki/Gullwing-Protocol/actions)
+[![CRA Ready](https://img.shields.io/badge/CRA-Sep%2011%2C%202026-blue)](https://eur-lex.europa.eu/eli/reg/2024/2847/oj)
+[![CISA Submitted](https://img.shields.io/badge/CISA-Submitted-green)](https://www.cisa.gov)
+[![Open Source](https://img.shields.io/badge/Open%20Source-100%25-brightgreen)](https://github.com/Chikimonki/Gullwing-Protocol)
+[![Lua](https://img.shields.io/badge/Lua-74.7%25-blue)](https://www.lua.org)
+[![Zig](https://img.shields.io/badge/Zig-14.7%25-orange)](https://ziglang.org)
+[![Platform](https://img.shields.io/badge/Platform-Linux%20%7C%20WSL%20%7C%20macOS-lightgrey)](https://github.com/Chikimonki/Gullwing-Protocol)
+[![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen)](https://github.com/Chikimonki/Gullwing-Protocol/pulls)
+[![Stars](https://img.shields.io/github/stars/Chikimonki/Gullwing-Protocol?style=social)](https://github.com/Chikimonki/Gullwing-Protocol/stargazers)
+[![Forks](https://img.shields.io/github/forks/Chikimonki/Gullwing-Protocol?style=social)](https://github.com/Chikimonki/Gullwing-Protocol/forks)
+
+#Gullwing Protocol — Complete Security Suite
 License: MIT
 Tests
 CRA
