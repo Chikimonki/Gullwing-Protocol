@@ -1,10 +1,13 @@
-#!/usr/bin/env luajit
--- Gullwing Command — Points to the correct installation
+#!/bin/bash
+# Gullwing Unified Command — Simple for everyone, powerful for experts
 
-local SRC = "/mnt/d/Gullwing/Gullwing-Protocol/src"
-
--- Update package path
-package.path = SRC .. "/?.lua;" .. package.path
-
--- Load the imperator
-dofile(SRC .. "/bin/gullwing/gullwing-imperator")
+if [ "$1" = "check" ] || [ "$1" = "scan" ] || [ "$1" = "report" ] || [ "$1" = "train" ]; then
+    # Simple commands for Aunt Maggie
+    exec /mnt/d/Gullwing/Gullwing-Protocol/bin/gullwing-simple "$@"
+elif [ "$1" = "fastscan" ] || [ "$1" = "isolate" ] || [ "$1" = "verify-supplier" ] || [ "$1" = "predict" ] || [ "$1" = "watch-rules" ] || [ "$1" = "dora-check" ] || [ "$1" = "modernise" ] || [ "$1" = "convert" ] || [ "$1" = "vehicle-check" ] || [ "$1" = "legal-check" ] || [ "$1" = "watch" ]; then
+    # Bird variant commands
+    exec /mnt/d/Gullwing/Gullwing-Protocol/bin/gullwing-birds "$@"
+else
+    # Full technical commands
+    exec luajit /mnt/d/Gullwing/Gullwing-Protocol/src/bin/gullwing/gullwing-imperator "$@"
+fi
