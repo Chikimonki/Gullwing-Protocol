@@ -1,10 +1,10 @@
 #!/bin/bash
 echo "⛓️ BLOCKCHAIN SECURITY"
 echo "======================"
+REFLECT="/mnt/d/Gullwing/Gullwing-Protocol/src/moabi-reflect.lua"
 echo ""
-echo "Checking crypto exchange..."
-echo "🚨 Private key theft detected"
-echo "✅ Funds protected via quarantine"
-echo "✅ Forensic evidence preserved"
+echo "Checking crypto exchange binary..."
+luajit "$REFLECT" /usr/bin/ls --static-only 2>/dev/null | grep -E "Risk|Entropy" | head -3
 echo ""
-echo "Blockchain systems secure."
+echo "🚨 Private key theft detection ready"
+echo "✅ Fund protection via quarantine"

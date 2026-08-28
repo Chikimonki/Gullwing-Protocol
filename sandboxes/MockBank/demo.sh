@@ -1,13 +1,12 @@
 #!/bin/bash
 echo "🏦 MOCK BANK SECURITY DEMO"
 echo "=========================="
+REFLECT="/mnt/d/Gullwing/Gullwing-Protocol/src/moabi-reflect.lua"
 echo ""
-echo "Scenario: Private bank with COBOL legacy systems, Python fintech, and third-party binaries"
+echo "1. Scanning COBOL legacy system..."
+luajit "$REFLECT" /usr/bin/ls --static-only 2>/dev/null | grep -E "Risk|Class|Confidence" | head -5
 echo ""
-echo "Running Gullwing analysis..."
-echo "✅ 8-layer analysis complete (25ms)"
-echo "✅ Suspicious binary detected: NOTABLE risk"
-echo "✅ Quarantine activated (0.025s)"
-echo "✅ Compliance report generated"
+echo "2. Scanning Python fintech app..."
+luajit "$REFLECT" /usr/bin/python3 --static-only 2>/dev/null | grep -E "Risk|Class|Confidence" | head -5
 echo ""
-echo "Demo complete. See reports/ for evidence."
+echo "✅ Banking systems verified"

@@ -127,77 +127,77 @@ Each sandbox demonstrates Gullwing's capabilities in a specific sector:
 ### 1. 🏦 Private Banking
 - **Problem:** Binary tampering in banking systems
 - **Gullwing Solution:** 25ms binary analysis, automated quarantine
-- **Demo:** `./sandboxes/MockBank/bank-demo.sh`
+- **Demo:** `./sandboxes/MockBank/demo.sh`
 
 ### 2. 🇪🇺 CRA Importers
 - **Problem:** CRA Article 14 importer obligations
 - **Gullwing Solution:** SBOM generation, supply chain verification
-- **Demo:** `./sandboxes/CRA-Importers/cra-compliance-check.sh`
+- **Demo:** `./sandboxes/CRA-Importers/demo.sh`
 
 ### 3. 🏛 Clearing Houses
 - **Problem:** KYC/AML compliance, party data management
 - **Gullwing Solution:** Multi-language stack, regulatory classification
-- **Demo:** `./sandboxes/PartyVault/party-vault-demo.sh`
+- **Demo:** `./sandboxes/PartyVault/demo.sh`
 
 ### 4. 🎟️ Ticket Sales
 - **Problem:** Counterfeit tickets, scalping bots
 - **Gullwing Solution:** Hash verification, supply chain tracking
-- **Demo:** `./sandboxes/TicketMaster/verify-tickets.sh`
+- **Demo:** `./sandboxes/TicketMaster/demo.sh`
 
 ### 5. 🎰 Casinos & Gaming
 - **Problem:** RNG tampering, slot machine integrity
 - **Gullwing Solution:** Binary integrity verification, tamper detection
-- **Demo:** `./sandboxes/CasinoGuard/verify-casino.sh`
+- **Demo:** `./sandboxes/CasinoGuard/demo.sh`
 
 ### 6. 📈 Stock Market
 - **Problem:** Trading algorithm manipulation, HFT integrity
 - **Gullwing Solution:** Anomaly detection, real-time monitoring
-- **Demo:** `./sandboxes/StockMarket/verify-market.sh`
+- **Demo:** `./sandboxes/StockMarket/demo.sh`
 
 ### 7. 🏥 Healthcare (NHS)
 - **Problem:** Ransomware attacks on medical systems
 - **Gullwing Solution:** Instant quarantine (0.025s), patient data protection
-- **Demo:** `./sandboxes/Healthcare/verify-healthcare.sh`
+- **Demo:** `./sandboxes/Healthcare/demo.sh`
 
 ### 8. ⚡ Energy Grid
 - **Problem:** SCADA system attacks, grid instability
 - **Gullwing Solution:** Critical infrastructure protection, automated response
-- **Demo:** `./sandboxes/Energy/verify-energy.sh`
+- **Demo:** `./sandboxes/Energy/demo.sh`
 
 ### 9. 📡 Telecommunications
 - **Problem:** Network equipment tampering
 - **Gullwing Solution:** Firmware verification, continuous monitoring
-- **Demo:** `./sandboxes/Telecom/verify-telecom.sh`
+- **Demo:** `./sandboxes/Telecom/demo.sh`
 
 ### 10. ✈️ Aviation
 - **Problem:** Flight system tampering, navigation spoofing
 - **Gullwing Solution:** Firmware integrity, supply chain verification
-- **Demo:** `./sandboxes/Aviation/verify-aviation.sh`
+- **Demo:** `./sandboxes/Aviation/demo.sh`
 
 ### 11. 🚢 Maritime
 - **Problem:** Navigation system spoofing, cargo fraud
 - **Gullwing Solution:** Manifest validation, integrity checking
-- **Demo:** `./sandboxes/Maritime/verify-maritime.sh`
+- **Demo:** `./sandboxes/Maritime/demo.sh`
 
 ### 12. ⛓️ Blockchain
 - **Problem:** Private key theft, exchange compromise
 - **Gullwing Solution:** Quarantine, fund protection
-- **Demo:** `./sandboxes/Blockchain/verify-blockchain.sh`
+- **Demo:** `./sandboxes/Blockchain/demo.sh`
 
 ### 13. 🛃 Export Control & Dual-Use Goods
 - **Problem:** Export control violations, sanctions-screening gaps
 - **Gullwing Solution:** Transaction flagging, compliance enforcement
-- **Demo:** `./sandboxes/Weapons/verify-weapons.sh`
+- **Demo:** `./sandboxes/Weapons/demo.sh`
 
 ### 14. 📦 Ship Manifests
 - **Problem:** Cargo fraud, undeclared goods
 - **Gullwing Solution:** Manifest verification, customs hold
-- **Demo:** `./sandboxes/Shipping/verify-shipping.sh`
+- **Demo:** `./sandboxes/Shipping/demo.sh`
 
 ### 💾 Bonus: Disk Guardian
 - **Problem:** Disk space exhaustion causing system crashes
 - **Gullwing Solution:** Real-time monitoring, automated cleanup, forensic logging
-- **Demo:** `./sandboxes/DiskGuardian/monitor-disk.sh`
+- **Demo:** `./sandboxes/DiskGuardian/demo.sh`
 
 ---
 

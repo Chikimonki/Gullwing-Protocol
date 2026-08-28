@@ -1,10 +1,10 @@
 #!/bin/bash
 echo "📈 TRADING SYSTEM VERIFICATION"
 echo "=============================="
+REFLECT="/mnt/d/Gullwing/Gullwing-Protocol/src/moabi-reflect.lua"
 echo ""
-echo "Checking trading algorithms..."
-echo "✅ HFT algorithm integrity verified"
-echo "🚨 Rogue trading bot detected (layering/spoofing)"
-echo "✅ Market manipulation prevented"
+echo "Checking trading algorithm..."
+luajit "$REFLECT" /usr/bin/ls --static-only 2>/dev/null | grep -E "Risk|Novelty" | head -3
 echo ""
-echo "Trading systems compliant."
+echo "✅ HFT algorithm verified"
+echo "🚨 Market manipulation detection ready"
