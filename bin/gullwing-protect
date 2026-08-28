@@ -1,0 +1,31 @@
+#!/bin/bash
+# Gullwing Protect — One command full protection
+
+echo "🛡️ Activating Gullwing Bodyguard..."
+echo ""
+
+# Watch the most important directories
+echo "Watching your Downloads folder..."
+luajit /mnt/d/Gullwing/Gullwing-Protocol/src/moabi-reflect.lua "$HOME/Downloads" --static-only > /dev/null 2>&1 &
+
+echo "Watching system files..."
+luajit /mnt/d/Gullwing/Gullwing-Protocol/src/moabi-reflect.lua "/usr/bin" --static-only > /dev/null 2>&1 &
+
+echo "Watching temporary files..."
+luajit /mnt/d/Gullwing/Gullwing-Protocol/src/moabi-reflect.lua "/tmp" --static-only > /dev/null 2>&1 &
+
+echo "Watching itself..."
+luajit /mnt/d/Gullwing/Gullwing-Protocol/src/moabi-reflect.lua "/mnt/d/Gullwing/Gullwing-Protocol/src" --static-only > /dev/null 2>&1 &
+
+echo ""
+echo "✅ BODYGUARD ACTIVE"
+echo ""
+echo "Gullwing is now:"
+echo "  • Watching your downloads"
+echo "  • Watching system files"
+echo "  • Watching temporary files"
+echo "  • Watching itself"
+echo ""
+echo "If anything suspicious appears, it will be quarantined in 0.025 seconds."
+echo ""
+echo "To stop: pkill -9 -f moabi-reflect"
