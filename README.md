@@ -277,3 +277,75 @@ Requires ~5GB disk space. On WSL, ensure Docker data is on D: drive:
 See WSL-DOCKER-SETUP.md for instructions.
 
 Note: The core Gullwing Protocol (detection, quarantine, AI analysis) works without Docker.
+
+## 🏭 Super Factories (AI-Compatible Build System)
+
+Gullwing Protocol uses a **Super Factory** architecture for rapid deployment across sectors:
+
+### The Core Four (Controls Everything)
+```yaml
+context:   # What the agent knows
+  max_tokens: 8192
+  focus: "Binary security analysis"
+
+model:     # Which LLM to use
+  primary: "qwen3.5:9b"
+  secondary: "phi4-mini"
+
+prompt:    # Instructions
+  system: "You are a senior security engineer..."
+
+tools:     # What the agent can do
+  - file_read
+  - file_write
+  - shell_execute
+  - gullwing_scan
+The 5-Phase Workflow
+Scout — Understand the codebase
+
+Plan — Create structured implementation plan
+
+Build — Implement following the plan
+
+Test — Run deterministic gates
+
+Review — Validate quality and compliance
+
+Factory Benefits
+Rapid deployment — New sector sandbox in minutes
+
+Consistent methodology — Same 8-layer analysis everywhere
+
+AI-ready — Compatible with any LLM (Ollama, DeepSeek, etc.)
+
+Reproducible — Deterministic gates ensure quality
+
+Example: Creating a New Sector Sandbox
+bash
+# 1. Copy the factory template
+cp -r sandboxes/MockBank sandboxes/NewSector
+
+# 2. Edit factory.yaml
+# 3. Add mock binaries
+# 4. Run the demo
+./sandboxes/NewSector/demo.sh
+
+## 🐦 Specialized Variants (Modular Deployment)
+
+| Variant | Purpose | Deploy When |
+|---------|---------|-------------|
+| Sandpiper | Standalone 8-layer convergence | Minimal footprint needed |
+| Gannet | High-velocity ingestion | High-volume binary processing |
+| Egret | Continuous monitoring | 24/7 surveillance required |
+| Buzzard | Binary quarantine | Isolated threat response |
+| Curlew | Supplier verification | Supply chain audits |
+| Crane | Strategic forecasting | Predictive security planning |
+| Flamingo | Legal text filter | Regulatory document processing |
+| Owl | Regulatory intelligence | Compliance monitoring |
+| Swan | COBOL modernisation | Legacy banking systems |
+| Tern | COBOL to Rust translator | Legacy migration |
+| Skylark | DORA compliance | Financial regulation |
+| Auto | Vehicle ECU protection | Automotive security |
+| Arcade | Training games | Security education |
+
+**All variants share the same 8-layer core.** Deploy only what you need.
