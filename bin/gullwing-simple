@@ -55,3 +55,14 @@ case "$1" in
         echo "Try: gullwing check <file>"
         ;;
 esac
+
+    # wsolver integration
+    deep-check)
+        shift
+        echo "🔍 Deep vulnerability check on $1..."
+        if [ -f "wsolver/wsolve" ]; then
+            ./wsolver/wsolve "$1" 2>&1 | tail -10
+        else
+            echo "⚠️ wsolver not built. Run: cd wsolver && make"
+        fi
+        ;;
