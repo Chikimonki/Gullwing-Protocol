@@ -228,7 +228,13 @@ cd Gullwing-Protocol
 # Initialize submodules
 git submodule update --init --recursive
 
-# Run the security pipeline on a target binary
+# Quick check (25ms)
+gullwing check /usr/bin/ls
+
+# Deep vulnerability check (if wsolver built)
+gullwing deep-check /usr/bin/ls
+
+# Run the security pipeline
 ./scripts/security-pipeline.sh /usr/bin/ls
 
 # Run all demos
@@ -254,10 +260,32 @@ make        # Builds native tools (~1MB)
 ```
 
 ### Full Mode (Docker Required — ~5GB)
-```bash
+
 cd wsolver
 make docker # Builds solver image (KLEE, SeaHorn, SMACK, IKOS)
 ```
+
+> ⚠️ **EXPERIMENTAL:** wsolver is research-grade software. Use in production only after understanding its limitations.
+
+### Verdict Mapping
+
+| wsolver Verdict | Gullwing Risk | Action |
+|-----------------|---------------|--------|
+| UNSAFE | CRITICAL | Immediate quarantine |
+| UNKNOWN | ELEVATED | Further investigation |
+| SAFE | CLEAR | No action needed |
+
+### Confidence Mapping
+
+| wsolver Confidence | Meaning |
+|-------------------|---------|
+| HIGH | ≥2 solvers agree |
+| MEDIUM | Majority agree |
+| LOW | Insufficient results |
+
+### LLM Triage Integration
+
+wsolver finds crashes. Kestrel determines if they're attacker-reachable. Together they provide a sound verdict.
 
 > **Note:** The core Gullwing Protocol (detection, quarantine, AI analysis) works without Docker.
 
@@ -387,3 +415,21 @@ PRs are welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md) for the workflow, test 
 <p align="center">
   <em>A complete security department in a box — detect, audit, comply, explain. On your hardware.</em>
 </p>
+
+## ⚠️ Known Limitations
+
+Gullwing is a **detective**, not a **bodyguard**. It tells you what's wrong. It doesn't physically prevent attacks.
+
+| Limitation | Impact | Mitigation |
+|------------|--------|------------|
+| Static analysis by default | Runtime/Memory skipped | Use `--deep-memory` |
+| ML confidence ≠ certainty | 99.99% still means 1 in 10,000 wrong | Human review for critical decisions |
+| wsolver is experimental | Research-grade, not production-ready | Understand limitations before use |
+| Quarantine is filesystem-level | Not kernel-level isolation | Use with OS-level security |
+| Single-machine by default | Fleet needs Headscale | Deploy Headscale for multi-node |
+
+**For complete security, use Gullwing alongside:** firewalls, sandboxes, SIEM, antivirus, and penetration testing.
+
+**Gullwing's unique value:** Speed (25ms), automation (quarantine), and accessibility (Aunt Maggie can use it).
+
+See [LIMITATIONS.md](LIMITATIONS.md) for full details.
