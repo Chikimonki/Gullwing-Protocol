@@ -9,13 +9,18 @@
 - Training games
 - 15 sector demos
 
-### What Gullwing Does NOT Do (Yet)
-- **Not a sandbox** — Quarantine isolates files but doesn't contain execution
-- **Not a firewall** — Network-level protection is outside scope
-- **Not an antivirus** — Doesn't scan for known malware signatures by default
-- **Not a SIEM** — Doesn't replace Splunk/ELK for log aggregation
-- **Not a formal verifier** — 8-layer analysis is heuristic, not proof
-- **Not a penetration testing suite** — wsolver finds some bugs, not all
+### What Gullwing Does (With Nuance)
+
+| Capability | What Gullwing Does | What It Doesn't Do |
+|------------|-------------------|-------------------|
+| **Sandbox** | Quarantine removes execute permissions (chmod 000) | Doesn't contain already-running processes |
+| **Firewall** | Detects network anomalies via fleet bus | Doesn't block ports or filter packets |
+| **Antivirus** | YARA integration (10,000+ rules) + LLM rule generation | Not a real-time signature scanner by default |
+| **SIEM** | STIX 2.1 export, audit logs, evidence bundles | Doesn't replace Splunk/ELK for aggregation |
+| **Formal verifier** | 8-layer analysis is heuristic, not proof | wsolver (separate project) may provide symbolic execution — see @endrazine's README |
+| **Pentest suite** | Gullwing core does not perform penetration testing | wsolver is a separate research tool — we have not independently verified its capabilities |
+
+**Bottom line:** Gullwing provides *partial* coverage in each area. It's strongest at binary analysis, quarantine, and compliance. It's weakest at network filtering and process containment.
 
 ### What Requires Understanding
 - **ML confidence ≠ certainty** — 99.99% still means 1 in 10,000 wrong
@@ -79,3 +84,15 @@ For complete security, use Gullwing alongside:
 - [ ] Formal verification integration
 - [ ] SIEM connectors
 - [ ] Sandbox integration
+
+
+## About Witchcraft Solver (wsolver)
+
+wsolver is **Jonathan Brossard's (@endrazine) research project**, not ours. We include it as a submodule for convenience, but:
+
+- We have **not independently verified** its claims
+- We have **not tested** it in production
+- We **do not vouch for** its accuracy or completeness
+- We **refer readers** to the [wsolver README](https://github.com/endrazine/wsolver) for authoritative information
+
+**Our integration is experimental.** Use wsolver at your own discretion and refer to @endrazine's documentation for limitations, requirements, and proper usage.

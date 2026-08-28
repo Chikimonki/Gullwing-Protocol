@@ -267,22 +267,6 @@ make docker # Builds solver image (KLEE, SeaHorn, SMACK, IKOS)
 
 > ⚠️ **EXPERIMENTAL:** wsolver is research-grade software. Use in production only after understanding its limitations.
 
-### Verdict Mapping
-
-| wsolver Verdict | Gullwing Risk | Action |
-|-----------------|---------------|--------|
-| UNSAFE | CRITICAL | Immediate quarantine |
-| UNKNOWN | ELEVATED | Further investigation |
-| SAFE | CLEAR | No action needed |
-
-### Confidence Mapping
-
-| wsolver Confidence | Meaning |
-|-------------------|---------|
-| HIGH | ≥2 solvers agree |
-| MEDIUM | Majority agree |
-| LOW | Insufficient results |
-
 ### LLM Triage Integration
 
 wsolver finds crashes. Kestrel determines if they're attacker-reachable. Together they provide a sound verdict.
