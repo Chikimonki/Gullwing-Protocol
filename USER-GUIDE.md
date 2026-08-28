@@ -120,3 +120,29 @@ GitHub: https://github.com/Chikimonki/Gullwing-Protocol/issues
 Email: forgottennord@gmail.com
 
 "The Cormorant dives. The Gullwing watches. The Kestrel carries. The Solver proves."
+
+## 🔪 Server Management
+
+### Kill All Servers
+```bash
+./kill-servers.sh
+Restart Everything
+bash
+./restart-everything.sh
+Kill Specific Port
+bash
+# Frontend (8081)
+fuser -k 8081/tcp
+
+# API (9393)
+fuser -k 9393/tcp
+Check What's Running
+bash
+# Check specific port
+lsof -i :8081
+
+# Check all Python servers
+ps aux | grep "http.server"
+
+# Check all Gullwing processes
+ps aux | grep "moabi"
