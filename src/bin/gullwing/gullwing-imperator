@@ -4,7 +4,7 @@
 --  One binary to rule them all: reflect, watch, attest, delta, compare.
 --============================================================================
 
-local SRC = "/mnt/d/moabi/src"
+local SRC = "/mnt/d/Gullwing/Gullwing-Protocol/src"
 package.path = SRC .. "/?.lua;" .. package.path
 
 -- ============================================================================
