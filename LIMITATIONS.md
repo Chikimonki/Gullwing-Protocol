@@ -48,7 +48,13 @@
 
 ## What This Means
 
-Gullwing is a **detective**, not a **bodyguard**. It tells you what's wrong. It doesn't physically prevent attacks.
+Gullwing is **both a detective AND a bodyguard**.
+
+As a **detective**, it investigates: "What is this binary? Has it changed? Is it suspicious?"
+
+As a **bodyguard**, it acts: "This binary is quarantined. This change is blocked. This threat is isolated."
+
+The difference from a human bodyguard? Gullwing never sleeps, never blinks, and reacts in 25 milliseconds.
 
 For complete security, use Gullwing alongside:
 - Firewalls (network protection)

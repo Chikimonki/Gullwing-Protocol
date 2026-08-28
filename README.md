@@ -418,7 +418,7 @@ PRs are welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md) for the workflow, test 
 
 ## ⚠️ Known Limitations
 
-Gullwing is a **detective**, not a **bodyguard**. It tells you what's wrong. It doesn't physically prevent attacks.
+Gullwing is **both a detective AND a bodyguard** — it investigates AND it acts. It tells you what's wrong. It doesn't physically prevent attacks.
 
 | Limitation | Impact | Mitigation |
 |------------|--------|------------|
