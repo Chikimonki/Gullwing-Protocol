@@ -3,14 +3,14 @@ echo "🔄 RESTARTING GULLWING PROTOCOL"
 echo "================================"
 
 # Kill everything
-./kill-servers.sh
+./scripts/management/kill-servers.sh
 
 sleep 2
 
 # Start API server
 echo ""
 echo "Starting API server..."
-./start-server.sh
+./scripts/management/start-server.sh
 
 sleep 2
 

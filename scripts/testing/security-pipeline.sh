@@ -65,7 +65,7 @@ if curl -s http://127.0.0.1:9393/health > /dev/null 2>&1; then
       | python3 -c "import sys, json; data=json.load(sys.stdin); print(data.get('analysis','No analysis')[:400])" 2>/dev/null
 else
     echo "⚠️ Kestrel API not running"
-    echo "Start with: ./start-server.sh"
+    echo "Start with: ./scripts/management/start-server.sh"
 fi
     
     # 5. Party Vault Documents
