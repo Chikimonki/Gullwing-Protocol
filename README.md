@@ -1,6 +1,7 @@
 ## Gullwing Protocol — Complete Security Suite
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Tests](https://github.com/Chikimonki/Gullwing-Protocol/actions/workflows/main.yml/badge.svg)](https://github.com/Chikimonki/Gullwing-Protocol/actions)
 [![CRA Ready](https://img.shields.io/badge/CRA-Sep%2011%2C%202026-blue)](https://eur-lex.europa.eu/eli/reg/2024/2847/oj)
 [![CISA Submitted](https://img.shields.io/badge/CISA-Submitted-green)](https://www.cisa.gov)
 [![Open Source](https://img.shields.io/badge/Open%20Source-100%25-brightgreen)](https://github.com/Chikimonki/Gullwing-Protocol)
